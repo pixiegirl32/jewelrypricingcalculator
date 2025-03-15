@@ -1297,5 +1297,5 @@ step="0.01"
     </Card>
   );
 };
-export default JewelryCalculator;
 
+export default JewelryCalculator;
