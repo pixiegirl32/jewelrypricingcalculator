@@ -5,7 +5,7 @@ import { Calculator } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 
-const JewelryCalculator = () => {
+const Calculator = () => {
   // Design Info
   const [designName, setDesignName] = useState('');
   
@@ -1298,4 +1298,4 @@ step="0.01"
   );
 };
 
-module.exports = JewelryCalculator;
+export default Calculator;
