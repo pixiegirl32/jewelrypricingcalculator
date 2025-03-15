@@ -1,14 +1,12 @@
 'use client'
 
-import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import React from 'react';
 
 const Calculator = () => {
-  // Just a simple placeholder component for now
   return (
-    <div>
-      <h1>Jewelry Pricing Calculator</h1>
-      <p>This is a simplified version to test deployment</p>
+    <div className="p-6 max-w-4xl mx-auto bg-white rounded-lg shadow-md">
+      <h1 className="text-2xl font-bold mb-4">Jewelry Pricing Calculator</h1>
+      <p className="text-gray-600">This is a simplified version to test deployment</p>
     </div>
   );
 };
