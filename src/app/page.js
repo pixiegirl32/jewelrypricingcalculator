@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './components/ui/card';
 import { Calculator } from 'lucide-react';
 import * as XLSX from 'xlsx';
@@ -11,21 +11,32 @@ const JewelryCalculator = () => {
   const [designName, setDesignName] = useState('');
   
   // Saved Designs State
-  const [savedDesigns, setSavedDesigns] = useState(() => {
+  const [savedDesigns, setSavedDesigns] = useState([]);
+  
+useEffect(() => {
+  if (typeof window !== 'undefined') {
     const saved = localStorage.getItem('savedDesigns');
-    return saved ? JSON.parse(saved) : [];
-  });
+    if (saved) {
+      setSavedDesigns(JSON.parse(saved));
+    }
+  }
+}, []);
 
   // Materials State
   const [materials, setMaterials] = useState([
     { name: '', cost: 0, quantity: 1 }
   ]);
 
-  const [savedMaterials, setSavedMaterials] = useState(() => {
-    // Try to load saved materials from localStorage
+  const [savedMaterials, setSavedMaterials] = useState([]);
+
+useEffect(() => {
+  if (typeof window !== 'undefined') {
     const saved = localStorage.getItem('savedMaterials');
-    return saved ? JSON.parse(saved) : [];
-  });
+    if (saved) {
+      setSavedMaterials(JSON.parse(saved));
+    }
+  }
+}, []);
 
   // Component Calculator States
   const [findingsCalc, setFindingsCalc] = useState({
@@ -131,10 +142,16 @@ const JewelryCalculator = () => {
   });
 
   // Saved Overhead State
-  const [savedOverhead, setSavedOverhead] = useState(() => {
+  const [savedOverhead, setSavedOverhead] = useState(null);
+
+useEffect(() => {
+  if (typeof window !== 'undefined') {
     const saved = localStorage.getItem('savedOverhead');
-    return saved ? JSON.parse(saved) : null;
-  });
+    if (saved) {
+      setSavedOverhead(JSON.parse(saved));
+    }
+  }
+}, []);
 
   // Pricing settings
   const [settings, setSettings] = useState({
