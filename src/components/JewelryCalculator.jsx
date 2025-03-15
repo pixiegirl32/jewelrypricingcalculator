@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from './components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Calculator } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
