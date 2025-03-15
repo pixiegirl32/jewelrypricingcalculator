@@ -1,7 +1,5 @@
-import JewelryCalculator from '../components/JewelryCalculator';
+import Calculator from '../components/Calculator';
 
 export default function Home() {
-  return (
-    <JewelryCalculator />
-  );
+  return <Calculator />;
 }
