@@ -15,12 +15,14 @@ const JewelryCalculator = () => {
   
 useEffect(() => {
   if (typeof window !== 'undefined') {
+    const [savedDesigns, setSavedDesigns] = useState([]);
+useEffect(() => {
+  if (typeof window !== 'undefined') {
     const saved = localStorage.getItem('savedDesigns');
-    if (saved) {
-      setSavedDesigns(JSON.parse(saved));
-    }
+    if (saved) setSavedDesigns(JSON.parse(saved));
   }
 }, []);
+
 
   // Materials State
   const [materials, setMaterials] = useState([
@@ -31,10 +33,11 @@ useEffect(() => {
 
 useEffect(() => {
   if (typeof window !== 'undefined') {
+    const [savedMaterials, setSavedMaterials] = useState([]);
+useEffect(() => {
+  if (typeof window !== 'undefined') {
     const saved = localStorage.getItem('savedMaterials');
-    if (saved) {
-      setSavedMaterials(JSON.parse(saved));
-    }
+    if (saved) setSavedMaterials(JSON.parse(saved));
   }
 }, []);
 
@@ -146,10 +149,11 @@ useEffect(() => {
 
 useEffect(() => {
   if (typeof window !== 'undefined') {
+    const [savedOverhead, setSavedOverhead] = useState(null);
+useEffect(() => {
+  if (typeof window !== 'undefined') {
     const saved = localStorage.getItem('savedOverhead');
-    if (saved) {
-      setSavedOverhead(JSON.parse(saved));
-    }
+    if (saved) setSavedOverhead(JSON.parse(saved));
   }
 }, []);
 
