@@ -1298,4 +1298,4 @@ step="0.01"
   );
 };
 
-export default JewelryCalculator;
+module.exports = JewelryCalculator;
