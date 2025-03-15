@@ -1,5 +1,6 @@
 'use client'
-import React, { useState } from 'react';
+const React = require('react');
+const { useState } = React;
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Calculator } from 'lucide-react';
 import * as XLSX from 'xlsx';
@@ -1298,4 +1299,4 @@ step="0.01"
   );
 };
 
-export default Calculator;
+module.exports = Calculator;
