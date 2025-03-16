@@ -350,7 +350,26 @@ const exportToSheets = () => {
     ["Wholesale Profit", `$${(calculatedWholesalePrice - myCost).toFixed(2)}`]
   ];
 
-  const exportToPDF = () => {
+  // Add market adjustment section if there's a custom price
+  if (settings.customRetailPrice) {
+    exportData.push(
+      [""], // Empty row for spacing
+      ["Market Adjusted Pricing"],
+      ["Final Retail Price", `$${finalRetailPrice.toFixed(2)}`],
+      ["Final Retail Profit", `$${(finalRetailPrice - myCost).toFixed(2)}`],
+      ["Final Wholesale Price", `$${finalWholesalePrice.toFixed(2)}`],
+      ["Final Wholesale Profit", `$${(finalWholesalePrice - myCost).toFixed(2)}`]
+    );
+  }
+
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.sheet_add_aoa(wb, exportData);
+  XLSX.utils.book_append_sheet(wb, ws, "Design Details");
+  XLSX.writeFile(wb, `${designName || 'design'}.csv`);
+};
+
+// Moved exportToPDF function outside of exportToSheets
+const exportToPDF = () => {
   const doc = new jsPDF();
   let yPos = 20;
   const lineHeight = 10;
@@ -451,24 +470,6 @@ const exportToSheets = () => {
   
   // Save the PDF
   doc.save(`${designName || 'design'}.pdf`);
-};
-
-  // Add market adjustment section if there's a custom price
-  if (settings.customRetailPrice) {
-    exportData.push(
-      [""], // Empty row for spacing
-      ["Market Adjusted Pricing"],
-      ["Final Retail Price", `$${finalRetailPrice.toFixed(2)}`],
-      ["Final Retail Profit", `$${(finalRetailPrice - myCost).toFixed(2)}`],
-      ["Final Wholesale Price", `$${finalWholesalePrice.toFixed(2)}`],
-      ["Final Wholesale Profit", `$${(finalWholesalePrice - myCost).toFixed(2)}`]
-    );
-  }
-
-  const wb = XLSX.utils.book_new();
-  const ws = XLSX.utils.sheet_add_aoa(wb, exportData);
-  XLSX.utils.book_append_sheet(wb, ws, "Design Details");
-  XLSX.writeFile(wb, `${designName || 'design'}.csv`);
 };
   
   return (
