@@ -269,7 +269,7 @@ const Calculator = () => {
         marginBottom: '16px', 
         padding: '12px', 
         backgroundColor: '#e3f2fd', 
-        border: '1px solid '#bbdefb', 
+        border: '1px solid #bbdefb', 
         borderRadius: '4px', 
         fontSize: '14px' 
       }}>
