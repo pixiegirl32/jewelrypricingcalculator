@@ -12,22 +12,30 @@ const Calculator = () => {
   const [savedDesigns, setSavedDesigns] = useState([]);
 
   // Load saved designs from localStorage on component mount
-  useEffect(() => {
-    const saved = localStorage.getItem('savedDesigns');
-    if (saved) {
-      setSavedDesigns(JSON.parse(saved));
-    }
-    
-    const savedOverhead = localStorage.getItem('savedOverhead');
-    if (savedOverhead) {
-      setSavedOverhead(JSON.parse(savedOverhead));
-    }
-  }, []);
+ useEffect(() => {
+  const saved = localStorage.getItem('savedDesigns');
+  if (saved) {
+    setSavedDesigns(JSON.parse(saved));
+  }
+  
+  const savedOverhead = localStorage.getItem('savedOverhead');
+  if (savedOverhead) {
+    setSavedOverhead(JSON.parse(savedOverhead));
+  }
+  
+  const savedMats = localStorage.getItem('savedMaterials');
+  if (savedMats) {
+    setSavedMaterials(JSON.parse(savedMats));
+  }
+}, []);
   
   // Materials State
   const [materials, setMaterials] = useState([
     { name: '', cost: 0, quantity: 1 }
   ]);
+
+// Saved Materials State
+const [savedMaterials, setSavedMaterials] = useState([]);
   
   // Labor state
   const [labor, setLabor] = useState({
@@ -474,51 +482,117 @@ const exportToSheets = () => {
       </div>
       
       {/* Materials Section */}
-      <div style={{ marginTop: '20px' }}>
-        <h2>Materials</h2>
-        
-        {materials.map((material, index) => (
-          <div key={index} style={{ display: 'flex', marginBottom: '10px', alignItems: 'center' }}>
-            <input
-              type="text"
-              placeholder="Material name"
-              value={material.name}
-              onChange={(e) => updateMaterial(index, 'name', e.target.value)}
-              style={{ flex: '1', marginRight: '10px', padding: '5px' }}
-            />
-            <input
-              type="number"
-              placeholder="Cost"
-              value={material.cost}
-              onChange={(e) => updateMaterial(index, 'cost', e.target.value)}
-              style={{ width: '80px', marginRight: '10px', padding: '5px' }}
-            />
-            <input
-              type="number"
-              placeholder="Quantity"
-              value={material.quantity}
-              onChange={(e) => updateMaterial(index, 'quantity', e.target.value)}
-              style={{ width: '80px', marginRight: '10px', padding: '5px' }}
-            />
-            <div style={{ width: '80px', padding: '5px', background: '#f5f5f5', border: '1px solid #ddd', textAlign: 'center' }}>
-              ${(material.cost * material.quantity).toFixed(2)}
-            </div>
-            <button 
-              onClick={() => removeMaterial(index)}
-              style={{ marginLeft: '10px', background: 'none', border: 'none', color: '#e53935', fontSize: '18px', cursor: 'pointer' }}
-            >
-              ×
-            </button>
-          </div>
+<div style={{ marginTop: '20px' }}>
+  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+    <h2 style={{ margin: 0 }}>Materials</h2>
+    <div style={{ display: 'flex', gap: '10px' }}>
+      <select
+        onChange={(e) => {
+          if (e.target.value === 'delete') {
+            const materialToDelete = prompt('Enter the name of the material to delete:');
+            if (materialToDelete) {
+              setSavedMaterials(prev => {
+                const newSaved = prev.filter(mat => mat.name !== materialToDelete);
+                localStorage.setItem('savedMaterials', JSON.stringify(newSaved));
+                return newSaved;
+              });
+            }
+          } else if (e.target.value) {
+            const savedMaterial = JSON.parse(e.target.value);
+            setMaterials([...materials, savedMaterial]);
+          }
+        }}
+        style={{ padding: '5px', border: '1px solid #ddd', borderRadius: '4px' }}
+        value=""
+      >
+        <option value="">Select Saved Material</option>
+        {savedMaterials.map((material, index) => (
+          <option key={index} value={JSON.stringify(material)}>
+            {material.name}
+          </option>
         ))}
-        
-        <button 
-          onClick={() => setMaterials([...materials, { name: '', cost: 0, quantity: 1 }])}
-          style={{ padding: '5px 10px', background: '#4a90e2', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
-        >
-          Add Material
-        </button>
+        {savedMaterials.length > 0 && (
+          <option value="delete">Delete a Material...</option>
+        )}
+      </select>
+      <button 
+        onClick={() => setMaterials([...materials, { name: '', cost: 0, quantity: 1 }])}
+        style={{ padding: '5px 10px', background: '#4a90e2', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+      >
+        Add Material
+      </button>
+    </div>
+  </div>
+  
+  {materials.map((material, index) => (
+    <div key={index} style={{ display: 'flex', marginBottom: '10px', alignItems: 'center' }}>
+      <input
+        type="text"
+        placeholder="Material name"
+        value={material.name}
+        onChange={(e) => updateMaterial(index, 'name', e.target.value)}
+        style={{ flex: '1', marginRight: '10px', padding: '5px' }}
+      />
+      <input
+        type="number"
+        placeholder="Cost"
+        value={material.cost}
+        onChange={(e) => updateMaterial(index, 'cost', e.target.value)}
+        style={{ width: '80px', marginRight: '10px', padding: '5px' }}
+      />
+      <input
+        type="number"
+        placeholder="Quantity"
+        value={material.quantity}
+        onChange={(e) => updateMaterial(index, 'quantity', e.target.value)}
+        style={{ width: '80px', marginRight: '10px', padding: '5px' }}
+      />
+      <div style={{ width: '80px', padding: '5px', background: '#f5f5f5', border: '1px solid #ddd', textAlign: 'center' }}>
+        ${(material.cost * material.quantity).toFixed(2)}
       </div>
+      <div style={{ display: 'flex' }}>
+  <button 
+    onClick={() => {
+      if (material.name) {
+        setSavedMaterials(prev => {
+          const newSaved = [...prev, { name: material.name, cost: material.cost, quantity: material.quantity }];
+          localStorage.setItem('savedMaterials', JSON.stringify(newSaved));
+          return newSaved;
+        });
+        alert(`Material "${material.name}" saved!`);
+      } else {
+        alert("Please enter a material name before saving");
+      }
+    }}
+    style={{ 
+      background: 'none', 
+      border: 'none', 
+      color: '#4a90e2', 
+      fontSize: '18px', 
+      cursor: 'pointer',
+      padding: '0 5px'
+    }}
+    title="Save for reuse"
+  >
+    💾
+  </button>
+  <button 
+    onClick={() => removeMaterial(index)}
+    style={{ 
+      background: 'none', 
+      border: 'none', 
+      color: '#e53935', 
+      fontSize: '18px', 
+      cursor: 'pointer',
+      padding: '0 5px'
+    }}
+  >
+    ×
+  </button>
+</div>
+    </div>
+  ))}
+</div>
       
       {/* Display materials total */}
       <div style={{ marginTop: '20px', padding: '10px', background: '#f5f5f5', borderRadius: '4px', display: 'flex', justifyContent: 'space-between' }}>
