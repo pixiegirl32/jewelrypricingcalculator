@@ -523,6 +523,14 @@ const exportToSheets = () => {
       </button>
     </div>
   </div>
+
+<div style={{ display: 'flex', marginBottom: '8px', fontWeight: 'bold', fontSize: '14px' }}>
+  <div style={{ flex: '1', marginRight: '10px' }}>Material Name</div>
+  <div style={{ width: '80px', marginRight: '10px', textAlign: 'center' }}>Cost</div>
+  <div style={{ width: '80px', marginRight: '10px', textAlign: 'center' }}>Amount Used</div>
+  <div style={{ width: '80px', marginRight: '10px', textAlign: 'center' }}>Line Total</div>
+  <div style={{ width: '70px' }}></div> {/* Space for action buttons */}
+</div>
   
   {materials.map((material, index) => (
     <div key={index} style={{ display: 'flex', marginBottom: '10px', alignItems: 'center' }}>
