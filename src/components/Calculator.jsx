@@ -261,13 +261,12 @@ const calculatePackagingCost = () => {
   // My cost calculation with overhead
   const myCost = materialTotal + laborCost + overheadCost + packagingCosts;
   
-  // Material markup calculation
-  const materialWithMarkup = materialTotal * settings.materialMarkup;
-  const baseCost = materialWithMarkup + laborCost + overheadCost + packagingCosts;
+  // My cost calculation
+const myCost = materialTotal + laborCost + overheadCost + packagingCosts;
   
-  // Initial pricing
-  const calculatedRetailPrice = baseCost;
-  const calculatedWholesalePrice = calculatedRetailPrice / 2;
+// Calculate retail price using the markup multiplier
+const calculatedRetailPrice = myCost * settings.materialMarkup;
+const calculatedWholesalePrice = calculatedRetailPrice / 2;
   
   // Final prices with custom retail (if provided)
   const finalRetailPrice = settings.customRetailPrice || calculatedRetailPrice;
