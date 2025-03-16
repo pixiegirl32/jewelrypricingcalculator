@@ -22,6 +22,67 @@ const Calculator = () => {
     customRetailPrice: null
   });
   
+  // Component Calculator States
+  const [findingsCalc, setFindingsCalc] = useState({
+    packageCost: 0,
+    pieceCount: 1,
+    piecesNeeded: 1
+  });
+
+  const [wireCalc, setWireCalc] = useState({
+    wireCost: 0,
+    lengthNeeded: 0
+  });
+
+  const [chainCalc, setChainCalc] = useState({
+    bulkCost: 0,
+    bulkLength: 0,
+    lengthNeeded: 0
+  });
+
+  const [beadCalc, setBeadCalc] = useState({
+    strandCost: 0,
+    beadsPerStrand: 0,
+    beadsNeeded: 0
+  });
+  
+  // Component Calculator Functions
+  const addFindingsToMaterials = () => {
+    const costPerPiece = findingsCalc.packageCost / findingsCalc.pieceCount;
+    setMaterials([...materials, {
+      name: 'Findings Component',
+      cost: costPerPiece,
+      quantity: findingsCalc.piecesNeeded
+    }]);
+  };
+
+  const addWireToMaterials = () => {
+    const costPerInch = wireCalc.wireCost / 12;
+    setMaterials([...materials, {
+      name: 'Wire',
+      cost: costPerInch,
+      quantity: wireCalc.lengthNeeded
+    }]);
+  };
+
+  const addChainToMaterials = () => {
+    const costPerInch = chainCalc.bulkCost / chainCalc.bulkLength;
+    setMaterials([...materials, {
+      name: 'Chain',
+      cost: costPerInch,
+      quantity: chainCalc.lengthNeeded
+    }]);
+  };
+
+  const addBeadsToMaterials = () => {
+    const costPerBead = beadCalc.strandCost / beadCalc.beadsPerStrand;
+    setMaterials([...materials, {
+      name: 'Beads',
+      cost: costPerBead,
+      quantity: beadCalc.beadsNeeded
+    }]);
+  };
+  
   // Update material line
   const updateMaterial = (index, field, value) => {
     const updatedMaterials = [...materials];
@@ -50,7 +111,7 @@ const Calculator = () => {
   const finalWholesalePrice = finalRetailPrice / 2;
   
   return (
-    <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px' }}>
+    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
       <h1 style={{ textAlign: 'center' }}>Jewelry Pricing Calculator</h1>
       
       {/* Design Name */}
@@ -105,6 +166,178 @@ const Calculator = () => {
       {/* Display materials total */}
       <div style={{ marginTop: '20px', padding: '10px', background: '#f5f5f5', borderRadius: '4px' }}>
         <h3>Materials Total: ${materialTotal.toFixed(2)}</h3>
+      </div>
+      
+      {/* Component Calculator */}
+      <div style={{ marginTop: '20px' }}>
+        <h2>Component Calculator</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+          {/* Findings Calculator */}
+          <div style={{ border: '1px solid #ddd', borderRadius: '4px', padding: '15px' }}>
+            <h3 style={{ marginTop: '0' }}>Findings Calculator</h3>
+            <div style={{ marginBottom: '10px' }}>
+              <label>Package Cost</label>
+              <input
+                type="number"
+                placeholder="Cost of package"
+                value={findingsCalc.packageCost}
+                onChange={(e) => setFindingsCalc({...findingsCalc, packageCost: Number(e.target.value)})}
+                style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+                step="0.01"
+              />
+            </div>
+            <div style={{ marginBottom: '10px' }}>
+              <label>Pieces in Package</label>
+              <input
+                type="number"
+                placeholder="Number of pieces"
+                value={findingsCalc.pieceCount}
+                onChange={(e) => setFindingsCalc({...findingsCalc, pieceCount: Number(e.target.value)})}
+                style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+                min="1"
+              />
+            </div>
+            <div style={{ marginBottom: '10px' }}>
+              <label>Pieces Needed</label>
+              <input
+                type="number"
+                placeholder="How many needed"
+                value={findingsCalc.piecesNeeded}
+                onChange={(e) => setFindingsCalc({...findingsCalc, piecesNeeded: Number(e.target.value)})}
+                style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+                min="1"
+              />
+            </div>
+            <button 
+              onClick={addFindingsToMaterials}
+              style={{ width: '100%', padding: '8px', background: '#4a90e2', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+            >
+              Add to Materials
+            </button>
+          </div>
+          
+          {/* Wire Calculator */}
+          <div style={{ border: '1px solid #ddd', borderRadius: '4px', padding: '15px' }}>
+            <h3 style={{ marginTop: '0' }}>Wire Calculator</h3>
+            <div style={{ marginBottom: '10px' }}>
+              <label>12" Wire Cost</label>
+              <input
+                type="number"
+                placeholder="Cost per foot"
+                value={wireCalc.wireCost}
+                onChange={(e) => setWireCalc({...wireCalc, wireCost: Number(e.target.value)})}
+                style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+                step="0.01"
+              />
+            </div>
+            <div style={{ marginBottom: '10px' }}>
+              <label>Length Needed (inches)</label>
+              <input
+                type="number"
+                placeholder="Inches needed"
+                value={wireCalc.lengthNeeded}
+                onChange={(e) => setWireCalc({...wireCalc, lengthNeeded: Number(e.target.value)})}
+                style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+                step="0.25"
+              />
+            </div>
+            <div style={{ marginBottom: '10px' }}></div>
+            <button 
+              onClick={addWireToMaterials}
+              style={{ width: '100%', padding: '8px', background: '#4a90e2', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+            >
+              Add to Materials
+            </button>
+          </div>
+          
+          {/* Chain Calculator */}
+          <div style={{ border: '1px solid #ddd', borderRadius: '4px', padding: '15px' }}>
+            <h3 style={{ marginTop: '0' }}>Chain Calculator</h3>
+            <div style={{ marginBottom: '10px' }}>
+              <label>Bulk Length Cost</label>
+              <input
+                type="number"
+                placeholder="Cost of bulk length"
+                value={chainCalc.bulkCost}
+                onChange={(e) => setChainCalc({...chainCalc, bulkCost: Number(e.target.value)})}
+                style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+                step="0.01"
+              />
+            </div>
+            <div style={{ marginBottom: '10px' }}>
+              <label>Bulk Length (inches)</label>
+              <input
+                type="number"
+                placeholder="Total length"
+                value={chainCalc.bulkLength}
+                onChange={(e) => setChainCalc({...chainCalc, bulkLength: Number(e.target.value)})}
+                style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+                min="1"
+              />
+            </div>
+            <div style={{ marginBottom: '10px' }}>
+              <label>Length Needed (inches)</label>
+              <input
+                type="number"
+                placeholder="Inches needed"
+                value={chainCalc.lengthNeeded}
+                onChange={(e) => setChainCalc({...chainCalc, lengthNeeded: Number(e.target.value)})}
+                style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+                step="0.25"
+              />
+            </div>
+            <button 
+              onClick={addChainToMaterials}
+              style={{ width: '100%', padding: '8px', background: '#4a90e2', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+            >
+              Add to Materials
+            </button>
+          </div>
+          
+          {/* Bead Calculator */}
+          <div style={{ border: '1px solid #ddd', borderRadius: '4px', padding: '15px' }}>
+            <h3 style={{ marginTop: '0' }}>Bead Calculator</h3>
+            <div style={{ marginBottom: '10px' }}>
+              <label>Strand Cost</label>
+              <input
+                type="number"
+                placeholder="Cost of strand"
+                value={beadCalc.strandCost}
+                onChange={(e) => setBeadCalc({...beadCalc, strandCost: Number(e.target.value)})}
+                style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+                step="0.01"
+              />
+            </div>
+            <div style={{ marginBottom: '10px' }}>
+              <label>Beads per Strand</label>
+              <input
+                type="number"
+                placeholder="Number of beads"
+                value={beadCalc.beadsPerStrand}
+                onChange={(e) => setBeadCalc({...beadCalc, beadsPerStrand: Number(e.target.value)})}
+                style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+                min="1"
+              />
+            </div>
+            <div style={{ marginBottom: '10px' }}>
+              <label>Beads Needed</label>
+              <input
+                type="number"
+                placeholder="How many needed"
+                value={beadCalc.beadsNeeded}
+                onChange={(e) => setBeadCalc({...beadCalc, beadsNeeded: Number(e.target.value)})}
+                style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+                min="1"
+              />
+            </div>
+            <button 
+              onClick={addBeadsToMaterials}
+              style={{ width: '100%', padding: '8px', background: '#4a90e2', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+            >
+              Add to Materials
+            </button>
+          </div>
+        </div>
       </div>
       
       {/* Labor Section */}
@@ -233,6 +466,32 @@ const Calculator = () => {
             </div>
           </div>
         )}
+      </div>
+      
+      {/* Footer Information */}
+      <div style={{ marginTop: '30px', padding: '15px', textAlign: 'center', borderTop: '1px solid #ddd' }}>
+        <p style={{ fontWeight: 'bold' }}>
+          Want to grow your jewelry business or add the skill of metalsmithing?
+        </p>
+        <p>
+          Learn about our business programs, jewelry classes, retreats and more at The Crested Butte Jewelry School and Jewelry Business School.
+        </p>
+        <a 
+          href="https://www.cbjewelryschool.com/what-is-jewelry-business-school" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          style={{ 
+            display: 'inline-block', 
+            padding: '8px 16px', 
+            background: '#4a90e2', 
+            color: 'white', 
+            textDecoration: 'none', 
+            borderRadius: '4px',
+            marginTop: '10px'
+          }}
+        >
+          Learn More Here
+        </a>
       </div>
     </div>
   );
