@@ -1330,8 +1330,7 @@ const exportToPDF = () => {
               </p>
               <div style={{ marginTop: '15px', paddingTop: '10px', borderTop: '1px solid #ccc' }}>
                 <p style={{ margin: '3px 0' }}>Materials with Markup: ${materialWithMarkup.toFixed(2)}</p>
-                <p style={{ fontWeight: 'medium' }}>Total Cost with Markup: ${baseCost.toFixed(2)}</p>
-              </div>
+          </div>
             </div>
           </div>
           
