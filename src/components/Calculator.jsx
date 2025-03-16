@@ -15,6 +15,11 @@ const Calculator = () => {
     if (saved) {
       setSavedDesigns(JSON.parse(saved));
     }
+    
+    const savedOverhead = localStorage.getItem('savedOverhead');
+    if (savedOverhead) {
+      setSavedOverhead(JSON.parse(savedOverhead));
+    }
   }, []);
   
   // Materials State
@@ -28,6 +33,18 @@ const Calculator = () => {
     hours: 0,
     minutes: 0
   });
+  
+  // Overhead State
+  const [overhead, setOverhead] = useState({
+    monthlyTotal: 0,
+    expenses: [
+      { name: 'Studio Rent', amount: 0 }
+    ],
+    designPercentage: 10
+  });
+
+  // Saved Overhead State
+  const [savedOverhead, setSavedOverhead] = useState(null);
   
   // Pricing settings
   const [settings, setSettings] = useState({
@@ -58,6 +75,9 @@ const Calculator = () => {
     beadsPerStrand: 0,
     beadsNeeded: 0
   });
+  
+  // Packaging costs
+  const [packagingCosts, setPackagingCosts] = useState(0);
   
   // Save current design
   const saveDesign = () => {
@@ -93,6 +113,42 @@ const Calculator = () => {
     const newSavedDesigns = savedDesigns.filter(design => design.name !== designName);
     setSavedDesigns(newSavedDesigns);
     localStorage.setItem('savedDesigns', JSON.stringify(newSavedDesigns));
+  };
+  
+  // Overhead Functions
+  const addExpense = () => {
+    setOverhead(prev => ({
+      ...prev,
+      expenses: [...prev.expenses, { name: '', amount: 0 }]
+    }));
+  };
+
+  const updateExpense = (index, field, value) => {
+    const updatedExpenses = [...overhead.expenses];
+    updatedExpenses[index] = {
+      ...updatedExpenses[index],
+      [field]: field === 'amount' ? Number(value) : value
+    };
+    
+    // Calculate new monthly total
+    const newTotal = updatedExpenses.reduce((sum, exp) => sum + exp.amount, 0);
+    
+    setOverhead(prev => ({
+      ...prev,
+      expenses: updatedExpenses,
+      monthlyTotal: newTotal
+    }));
+  };
+
+  const removeExpense = (index) => {
+    const updatedExpenses = overhead.expenses.filter((_, i) => i !== index);
+    const newTotal = updatedExpenses.reduce((sum, exp) => sum + exp.amount, 0);
+    
+    setOverhead(prev => ({
+      ...prev,
+      expenses: updatedExpenses,
+      monthlyTotal: newTotal
+    }));
   };
   
   // Component Calculator Functions
@@ -147,26 +203,80 @@ const Calculator = () => {
     setMaterials(materials.filter((_, i) => i !== index));
   };
   
-  // Calculations
+  // Calculations with overhead and packaging
   const materialTotal = materials.reduce((sum, mat) => sum + (mat.cost * mat.quantity), 0);
   const laborHours = labor.hours + (labor.minutes / 60);
   const laborCost = labor.hourlyRate * laborHours;
+  const overheadCost = savedOverhead ? (savedOverhead.monthlyTotal * (savedOverhead.designPercentage / 100)) : 0;
   
-  // My cost calculation
-  const myCost = materialTotal + laborCost;
+  // My cost calculation with overhead
+  const myCost = materialTotal + laborCost + overheadCost + packagingCosts;
   
   // Material markup calculation
   const materialWithMarkup = materialTotal * settings.materialMarkup;
-  const suggestedRetailPrice = materialWithMarkup + laborCost;
-  const suggestedWholesalePrice = suggestedRetailPrice / 2;
+  const baseCost = materialWithMarkup + laborCost + overheadCost + packagingCosts;
+  
+  // Initial pricing
+  const calculatedRetailPrice = baseCost;
+  const calculatedWholesalePrice = calculatedRetailPrice / 2;
   
   // Final prices with custom retail (if provided)
-  const finalRetailPrice = settings.customRetailPrice || suggestedRetailPrice;
+  const finalRetailPrice = settings.customRetailPrice || calculatedRetailPrice;
   const finalWholesalePrice = finalRetailPrice / 2;
+  
+  // Calculate profits
+  const initialRetailProfit = calculatedRetailPrice - myCost;
+  const initialWholesaleProfit = calculatedWholesalePrice - myCost;
+  const finalRetailProfit = finalRetailPrice - myCost;
+  const finalWholesaleProfit = finalWholesalePrice - myCost;
   
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
-      <h1 style={{ textAlign: 'center' }}>Jewelry Pricing Calculator</h1>
+      <div style={{ 
+        padding: '15px', 
+        background: '#f8f9fa', 
+        marginBottom: '20px', 
+        borderRadius: '4px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#4a90e2' }}>
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+            <line x1="8" y1="21" x2="16" y2="21"></line>
+            <line x1="12" y1="17" x2="12" y2="21"></line>
+          </svg>
+          <h1 style={{ margin: 0, fontSize: '20px' }}>Jewelry Pricing Calculator</h1>
+        </div>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button
+            style={{
+              padding: '5px 10px',
+              background: '#4CAF50',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+          >
+            Export to Excel
+          </button>
+        </div>
+      </div>
+      
+      <div style={{ 
+        marginBottom: '16px', 
+        padding: '12px', 
+        backgroundColor: '#e3f2fd', 
+        border: '1px solid '#bbdefb', 
+        borderRadius: '4px', 
+        fontSize: '14px' 
+      }}>
+        ⭐ Important: Your designs are saved in your browser. To keep them safe:
+        <br />• Don't clear your browser history/cache
+        <br />• Download your important designs as a backup
+      </div>
       
       {/* Design Name and Save Controls */}
       <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', alignItems: 'flex-end' }}>
@@ -219,19 +329,6 @@ const Calculator = () => {
             )}
           </select>
         </div>
-      </div>
-      
-      <div className="mb-4 p-3" style={{ 
-        marginBottom: '16px', 
-        padding: '12px', 
-        backgroundColor: '#e3f2fd', 
-        border: '1px solid #bbdefb', 
-        borderRadius: '4px', 
-        fontSize: '14px' 
-      }}>
-        ⭐ Important: Your designs are saved in your browser. To keep them safe:
-        <br />• Don't clear your browser history/cache
-        <br />• Download your important designs as a backup
       </div>
       
       {/* Materials Section */}
@@ -503,6 +600,110 @@ const Calculator = () => {
         <span style={{ fontSize: '18px', fontWeight: 'bold' }}>${laborCost.toFixed(2)}</span>
       </div>
       
+      {/* Overhead Calculator */}
+      <div style={{ marginTop: '20px' }}>
+        <h2>Monthly Overhead Calculator</h2>
+        <div style={{ marginTop: '10px' }}>
+          {overhead.expenses.map((expense, index) => (
+            <div key={index} style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+              <input
+                type="text"
+                placeholder="Expense name"
+                value={expense.name}
+                onChange={(e) => updateExpense(index, 'name', e.target.value)}
+                style={{ flex: '1', padding: '5px' }}
+              />
+              <input
+                type="number"
+                placeholder="Amount"
+                value={expense.amount}
+                onChange={(e) => updateExpense(index, 'amount', e.target.value)}
+                style={{ width: '120px', padding: '5px' }}
+                step="0.01"
+              />
+              <button 
+                onClick={() => removeExpense(index)}
+                style={{ background: 'none', border: 'none', color: '#e53935', fontSize: '18px', cursor: 'pointer' }}
+              >
+                ×
+              </button>
+            </div>
+          ))}
+          
+          <button 
+            onClick={addExpense}
+            style={{ padding: '5px 10px', background: '#4a90e2', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', marginBottom: '15px' }}
+          >
+            Add Expense
+          </button>
+
+          <div style={{ marginTop: '15px', padding: '15px', background: '#f5f5f5', borderRadius: '4px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+              <span style={{ fontWeight: 'bold' }}>Monthly Total:</span>
+              <span style={{ fontSize: '18px', fontWeight: 'bold' }}>${overhead.monthlyTotal.toFixed(2)}</span>
+            </div>
+            
+            <div style={{ marginBottom: '10px' }}>
+              <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+                Percentage to Add to Each Design (10-15%)
+              </label>
+              <input
+                type="number"
+                min="10"
+                max="15"
+                value={overhead.designPercentage}
+                onChange={(e) => setOverhead(prev => ({
+                  ...prev,
+                  designPercentage: Math.min(15, Math.max(10, Number(e.target.value)))
+                }))}
+                style={{ width: '100%', padding: '5px' }}
+              />
+            </div>
+            
+            <div style={{ marginTop: '15px' }}>
+              <button 
+                onClick={() => {
+                  localStorage.setItem('savedOverhead', JSON.stringify({
+                    monthlyTotal: overhead.monthlyTotal,
+                    designPercentage: overhead.designPercentage
+                  }));
+                  setSavedOverhead({
+                    monthlyTotal: overhead.monthlyTotal,
+                    designPercentage: overhead.designPercentage
+                  });
+                  alert('Overhead settings saved!');
+                }}
+                style={{ padding: '5px 10px', background: '#4CAF50', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+              >
+                Save Overhead Settings
+              </button>
+            </div>
+            
+            {savedOverhead && (
+              <div style={{ marginTop: '15px', padding: '10px', background: '#e3f2fd', borderRadius: '4px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                  <div>
+                    <p style={{ margin: '0 0 5px 0', fontSize: '14px' }}>Saved Overhead:</p>
+                    <p style={{ margin: '0', fontWeight: 'medium' }}>
+                      ${savedOverhead.monthlyTotal.toFixed(2)} monthly at {savedOverhead.designPercentage}% per design
+                    </p>
+                  </div>
+                  <button 
+                    onClick={() => {
+                      localStorage.removeItem('savedOverhead');
+                      setSavedOverhead(null);
+                    }}
+                    style={{ background: 'none', border: 'none', color: '#e53935', fontSize: '18px', cursor: 'pointer' }}
+                  >
+                    ×
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+      
       {/* Material Markup */}
       <div style={{ marginTop: '20px' }}>
         <h2>Material Markup</h2>
@@ -521,40 +722,50 @@ const Calculator = () => {
       
       {/* Pricing Information */}
       <div style={{ marginTop: '20px', background: '#e1f5fe', padding: '15px', borderRadius: '4px' }}>
-        <h2 style={{ marginTop: '0' }}>Pricing Information</h2>
+        <h2 style={{ marginTop: '0' }}>Cost & Suggested Pricing</h2>
         
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '15px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
           <div>
-            <h3 style={{ margin: '0 0 5px 0' }}>My Cost</h3>
-            <p style={{ margin: '0', fontSize: '18px', fontWeight: 'bold' }}>${myCost.toFixed(2)}</p>
-            <p style={{ margin: '5px 0 0 0', fontSize: '14px', color: '#666' }}>
-              Materials: ${materialTotal.toFixed(2)}<br />
-              Labor: ${laborCost.toFixed(2)}
-            </p>
+            <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '0 0 10px 0' }}>My Cost</p>
+            <div style={{ fontSize: '14px', color: '#333' }}>
+              <p style={{ margin: '3px 0' }}>Materials: ${materialTotal.toFixed(2)}</p>
+              <p style={{ margin: '3px 0' }}>Labor: ${laborCost.toFixed(2)}</p>
+              {packagingCosts > 0 && (
+                <p style={{ margin: '3px 0' }}>Packaging: ${packagingCosts.toFixed(2)}</p>
+              )}
+              {savedOverhead && (
+                <p style={{ margin: '3px 0' }}>
+                  Overhead ({savedOverhead.designPercentage}%): ${overheadCost.toFixed(2)}
+                </p>
+              )}
+              <p style={{ fontSize: '16px', fontWeight: 'bold', margin: '10px 0' }}>
+                Total My Cost: ${myCost.toFixed(2)}
+              </p>
+              <div style={{ marginTop: '15px', paddingTop: '10px', borderTop: '1px solid #ccc' }}>
+                <p style={{ margin: '3px 0' }}>Materials with Markup: ${materialWithMarkup.toFixed(2)}</p>
+                <p style={{ fontWeight: 'medium' }}>Total Cost with Markup: ${baseCost.toFixed(2)}</p>
+              </div>
+            </div>
           </div>
+          
           <div>
-            <h3 style={{ margin: '0 0 5px 0' }}>Materials with Markup</h3>
-            <p style={{ margin: '0', fontSize: '18px', fontWeight: 'bold' }}>${materialWithMarkup.toFixed(2)}</p>
-            <p style={{ margin: '5px 0 0 0', fontSize: '14px', color: '#666' }}>
-              Markup: {settings.materialMarkup}×
-            </p>
-          </div>
-        </div>
-        
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '15px' }}>
-          <div>
-            <h3 style={{ margin: '0 0 5px 0' }}>Suggested Retail</h3>
-            <p style={{ margin: '0', fontSize: '18px', fontWeight: 'bold' }}>${suggestedRetailPrice.toFixed(2)}</p>
-            <p style={{ margin: '5px 0 0 0', fontSize: '14px', color: '#666' }}>
-              Profit: ${(suggestedRetailPrice - myCost).toFixed(2)}
-            </p>
-          </div>
-          <div>
-            <h3 style={{ margin: '0 0 5px 0' }}>Suggested Wholesale</h3>
-            <p style={{ margin: '0', fontSize: '18px', fontWeight: 'bold' }}>${suggestedWholesalePrice.toFixed(2)}</p>
-            <p style={{ margin: '5px 0 0 0', fontSize: '14px', color: '#666' }}>
-              Profit: ${(suggestedWholesalePrice - myCost).toFixed(2)}
-            </p>
+            <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '0 0 10px 0' }}>Initial Pricing</p>
+            <div>
+              <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '5px 0' }}>
+                Retail: ${calculatedRetailPrice.toFixed(2)}
+              </p>
+              <p style={{ fontSize: '14px', color: '#333', margin: '3px 0' }}>
+                Retail Profit: ${initialRetailProfit.toFixed(2)}
+              </p>
+            </div>
+            <div style={{ marginTop: '15px' }}>
+              <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '5px 0' }}>
+                Wholesale: ${calculatedWholesalePrice.toFixed(2)}
+              </p>
+              <p style={{ fontSize: '14px', color: '#333', margin: '3px 0' }}>
+                Wholesale Profit: ${initialWholesaleProfit.toFixed(2)}
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -562,7 +773,9 @@ const Calculator = () => {
       {/* Market Adjustment */}
       <div style={{ marginTop: '20px' }}>
         <h2>Market Price Adjustment</h2>
-        <p style={{ fontSize: '14px', color: '#666' }}>Compare with similar products and adjust your retail price if needed</p>
+        <p style={{ fontSize: '14px', color: '#666' }}>
+          Compare with similar products and adjust your retail price if needed
+        </p>
         
         <div>
           <label>Adjusted Retail Price</label>
@@ -573,7 +786,7 @@ const Calculator = () => {
               ...settings,
               customRetailPrice: e.target.value ? Number(e.target.value) : null
             })}
-            placeholder={`Suggested: $${suggestedRetailPrice.toFixed(2)}`}
+            placeholder={`Suggested: $${calculatedRetailPrice.toFixed(2)}`}
             style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
             step="0.01"
           />
@@ -586,14 +799,14 @@ const Calculator = () => {
                 <h3 style={{ margin: '0 0 5px 0' }}>Final Retail Price</h3>
                 <p style={{ margin: '0', fontSize: '20px', fontWeight: 'bold' }}>${finalRetailPrice.toFixed(2)}</p>
                 <p style={{ margin: '5px 0 0 0', fontSize: '14px' }}>
-                  Profit: ${(finalRetailPrice - myCost).toFixed(2)}
+                  Profit: ${finalRetailProfit.toFixed(2)}
                 </p>
               </div>
               <div>
                 <h3 style={{ margin: '0 0 5px 0' }}>Final Wholesale Price</h3>
                 <p style={{ margin: '0', fontSize: '20px', fontWeight: 'bold' }}>${finalWholesalePrice.toFixed(2)}</p>
                 <p style={{ margin: '5px 0 0 0', fontSize: '14px' }}>
-                  Profit: ${(finalWholesalePrice - myCost).toFixed(2)}
+                  Profit: ${finalWholesaleProfit.toFixed(2)}
                 </p>
               </div>
             </div>
