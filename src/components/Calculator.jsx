@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 
+import * as XLSX from 'xlsx';
+
 const Calculator = () => {
   // Design Info
   const [designName, setDesignName] = useState('');
@@ -266,41 +268,144 @@ const calculatePackagingCost = () => {
   const initialWholesaleProfit = calculatedWholesalePrice - myCost;
   const finalRetailProfit = finalRetailPrice - myCost;
   const finalWholesaleProfit = finalWholesalePrice - myCost;
+
+// Export Functions
+const exportToExcel = () => {
+  // Create array for vertical layout
+  const exportData = [
+    ["Design Name", designName],
+    [""], // Empty row for spacing
+    ["Materials List"],
+    // Create a row for each material
+    ...materials.map(m => [
+      m.name, `$${m.cost.toFixed(2)}`, m.quantity, `$${(m.cost * m.quantity).toFixed(2)}`
+    ]),
+    [""], // Empty row for spacing
+    ["Cost Breakdown"],
+    ["Materials Total", `$${materialTotal.toFixed(2)}`],
+    ["Labor Cost", `$${laborCost.toFixed(2)}`],
+    ["Overhead Cost", savedOverhead ? `$${overheadCost.toFixed(2)}` : "$0.00"],
+    ["Packaging Cost", `$${packagingCosts.toFixed(2)}`],
+    ["My Total Cost", `$${myCost.toFixed(2)}`],
+    [""], // Empty row for spacing
+    ["Initial Pricing"],
+    ["Materials with Markup", `$${materialWithMarkup.toFixed(2)}`],
+    ["Retail Price", `$${calculatedRetailPrice.toFixed(2)}`],
+    ["Retail Profit", `$${(calculatedRetailPrice - myCost).toFixed(2)}`],
+    ["Wholesale Price", `$${calculatedWholesalePrice.toFixed(2)}`],
+    ["Wholesale Profit", `$${(calculatedWholesalePrice - myCost).toFixed(2)}`]
+  ];
+
+  // Add market adjustment section if there's a custom price
+  if (settings.customRetailPrice) {
+    exportData.push(
+      [""], // Empty row for spacing
+      ["Market Adjusted Pricing"],
+      ["Final Retail Price", `$${finalRetailPrice.toFixed(2)}`],
+      ["Final Retail Profit", `$${(finalRetailPrice - myCost).toFixed(2)}`],
+      ["Final Wholesale Price", `$${finalWholesalePrice.toFixed(2)}`],
+      ["Final Wholesale Profit", `$${(finalWholesalePrice - myCost).toFixed(2)}`]
+    );
+  }
+
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.sheet_add_aoa(wb, exportData);
+  XLSX.utils.book_append_sheet(wb, ws, "Design Details");
+  XLSX.writeFile(wb, `${designName || 'design'}.xlsx`);
+};
+
+const exportToSheets = () => {
+  // Create array for vertical layout (same as Excel)
+  const exportData = [
+    ["Design Name", designName],
+    [""], // Empty row for spacing
+    ["Materials List"],
+    // Create a row for each material
+    ...materials.map(m => [
+      m.name, `$${m.cost.toFixed(2)}`, m.quantity, `$${(m.cost * m.quantity).toFixed(2)}`
+    ]),
+    [""], // Empty row for spacing
+    ["Cost Breakdown"],
+    ["Materials Total", `$${materialTotal.toFixed(2)}`],
+    ["Labor Cost", `$${laborCost.toFixed(2)}`],
+    ["Overhead Cost", savedOverhead ? `$${overheadCost.toFixed(2)}` : "$0.00"],
+    ["Packaging Cost", `$${packagingCosts.toFixed(2)}`],
+    ["My Total Cost", `$${myCost.toFixed(2)}`],
+    [""], // Empty row for spacing
+    ["Initial Pricing"],
+    ["Materials with Markup", `$${materialWithMarkup.toFixed(2)}`],
+    ["Retail Price", `$${calculatedRetailPrice.toFixed(2)}`],
+    ["Retail Profit", `$${(calculatedRetailPrice - myCost).toFixed(2)}`],
+    ["Wholesale Price", `$${calculatedWholesalePrice.toFixed(2)}`],
+    ["Wholesale Profit", `$${(calculatedWholesalePrice - myCost).toFixed(2)}`]
+  ];
+
+  // Add market adjustment section if there's a custom price
+  if (settings.customRetailPrice) {
+    exportData.push(
+      [""], // Empty row for spacing
+      ["Market Adjusted Pricing"],
+      ["Final Retail Price", `$${finalRetailPrice.toFixed(2)}`],
+      ["Final Retail Profit", `$${(finalRetailPrice - myCost).toFixed(2)}`],
+      ["Final Wholesale Price", `$${finalWholesalePrice.toFixed(2)}`],
+      ["Final Wholesale Profit", `$${(finalWholesalePrice - myCost).toFixed(2)}`]
+    );
+  }
+
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.sheet_add_aoa(wb, exportData);
+  XLSX.utils.book_append_sheet(wb, ws, "Design Details");
+  XLSX.writeFile(wb, `${designName || 'design'}.csv`);
+};
   
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
       <div style={{ 
-        padding: '15px', 
-        background: '#f8f9fa', 
-        marginBottom: '20px', 
+  padding: '15px', 
+  background: '#f8f9fa', 
+  marginBottom: '20px', 
+  borderRadius: '4px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between'
+}}>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#4a90e2' }}>
+      <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+      <line x1="8" y1="21" x2="16" y2="21"></line>
+      <line x1="12" y1="17" x2="12" y2="21"></line>
+    </svg>
+    <h1 style={{ margin: 0, fontSize: '20px' }}>Jewelry Pricing Calculator</h1>
+  </div>
+  <div style={{ display: 'flex', gap: '8px' }}>
+    <button
+      onClick={exportToExcel}
+      style={{
+        padding: '5px 10px',
+        background: '#4CAF50',
+        color: 'white',
+        border: 'none',
         borderRadius: '4px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#4a90e2' }}>
-            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-            <line x1="8" y1="21" x2="16" y2="21"></line>
-            <line x1="12" y1="17" x2="12" y2="21"></line>
-          </svg>
-          <h1 style={{ margin: 0, fontSize: '20px' }}>Jewelry Pricing Calculator</h1>
-        </div>
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <button
-            style={{
-              padding: '5px 10px',
-              background: '#4CAF50',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer'
-            }}
-          >
-            Export to Excel
-          </button>
-        </div>
-      </div>
+        cursor: 'pointer'
+      }}
+    >
+      Export to Excel
+    </button>
+    <button
+      onClick={exportToSheets}
+      style={{
+        padding: '5px 10px',
+        background: '#4a90e2',
+        color: 'white',
+        border: 'none',
+        borderRadius: '4px',
+        cursor: 'pointer'
+      }}
+    >
+      Export to Sheets
+    </button>
+  </div>
+</div>
       
       <div style={{ 
         marginBottom: '16px', 
