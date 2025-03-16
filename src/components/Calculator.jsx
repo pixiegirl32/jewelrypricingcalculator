@@ -1,10 +1,23 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Calculator = () => {
-  // State variables
+  // Design Info
   const [designName, setDesignName] = useState('');
+  
+  // Saved Designs State
+  const [savedDesigns, setSavedDesigns] = useState([]);
+
+  // Load saved designs from localStorage on component mount
+  useEffect(() => {
+    const saved = localStorage.getItem('savedDesigns');
+    if (saved) {
+      setSavedDesigns(JSON.parse(saved));
+    }
+  }, []);
+  
+  // Materials State
   const [materials, setMaterials] = useState([
     { name: '', cost: 0, quantity: 1 }
   ]);
@@ -45,6 +58,42 @@ const Calculator = () => {
     beadsPerStrand: 0,
     beadsNeeded: 0
   });
+  
+  // Save current design
+  const saveDesign = () => {
+    if (!designName) {
+      alert('Please enter a design name before saving');
+      return;
+    }
+    
+    const designToSave = {
+      name: designName,
+      materials,
+      labor,
+      settings,
+      date: new Date().toISOString()
+    };
+    
+    const newSavedDesigns = [...savedDesigns, designToSave];
+    setSavedDesigns(newSavedDesigns);
+    localStorage.setItem('savedDesigns', JSON.stringify(newSavedDesigns));
+    alert('Design saved!');
+  };
+  
+  // Load a saved design
+  const loadDesign = (design) => {
+    setDesignName(design.name);
+    setMaterials(design.materials);
+    setLabor(design.labor);
+    setSettings(design.settings);
+  };
+  
+  // Delete a saved design
+  const deleteDesign = (designName) => {
+    const newSavedDesigns = savedDesigns.filter(design => design.name !== designName);
+    setSavedDesigns(newSavedDesigns);
+    localStorage.setItem('savedDesigns', JSON.stringify(newSavedDesigns));
+  };
   
   // Component Calculator Functions
   const addFindingsToMaterials = () => {
@@ -93,6 +142,11 @@ const Calculator = () => {
     setMaterials(updatedMaterials);
   };
   
+  // Remove material line
+  const removeMaterial = (index) => {
+    setMaterials(materials.filter((_, i) => i !== index));
+  };
+  
   // Calculations
   const materialTotal = materials.reduce((sum, mat) => sum + (mat.cost * mat.quantity), 0);
   const laborHours = labor.hours + (labor.minutes / 60);
@@ -114,15 +168,70 @@ const Calculator = () => {
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
       <h1 style={{ textAlign: 'center' }}>Jewelry Pricing Calculator</h1>
       
-      {/* Design Name */}
-      <div style={{ marginBottom: '20px' }}>
-        <label>Design Name: </label>
-        <input 
-          type="text" 
-          value={designName} 
-          onChange={(e) => setDesignName(e.target.value)}
-          style={{ padding: '5px', marginLeft: '5px' }}
-        />
+      {/* Design Name and Save Controls */}
+      <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', alignItems: 'flex-end' }}>
+        <div style={{ flex: '1' }}>
+          <label style={{ display: 'block', marginBottom: '5px' }}>Design Name</label>
+          <input 
+            type="text" 
+            value={designName} 
+            onChange={(e) => setDesignName(e.target.value)}
+            placeholder="Enter design name"
+            style={{ width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
+          />
+        </div>
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <button
+            onClick={saveDesign}
+            style={{ 
+              padding: '8px 16px', 
+              background: '#4a90e2', 
+              color: 'white', 
+              border: 'none', 
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+          >
+            Save Design
+          </button>
+          <select
+            onChange={(e) => {
+              if (e.target.value === 'delete') {
+                const designToDelete = prompt('Enter the name of the design to delete:');
+                if (designToDelete) {
+                  deleteDesign(designToDelete);
+                }
+              } else if (e.target.value) {
+                loadDesign(JSON.parse(e.target.value));
+              }
+            }}
+            style={{ padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
+            value=""
+          >
+            <option value="">Load Saved Design</option>
+            {savedDesigns.map((design, index) => (
+              <option key={index} value={JSON.stringify(design)}>
+                {design.name} - {new Date(design.date).toLocaleDateString()}
+              </option>
+            ))}
+            {savedDesigns.length > 0 && (
+              <option value="delete">Delete a Design...</option>
+            )}
+          </select>
+        </div>
+      </div>
+      
+      <div className="mb-4 p-3" style={{ 
+        marginBottom: '16px', 
+        padding: '12px', 
+        backgroundColor: '#e3f2fd', 
+        border: '1px solid #bbdefb', 
+        borderRadius: '4px', 
+        fontSize: '14px' 
+      }}>
+        ⭐ Important: Your designs are saved in your browser. To keep them safe:
+        <br />• Don't clear your browser history/cache
+        <br />• Download your important designs as a backup
       </div>
       
       {/* Materials Section */}
@@ -130,7 +239,7 @@ const Calculator = () => {
         <h2>Materials</h2>
         
         {materials.map((material, index) => (
-          <div key={index} style={{ display: 'flex', marginBottom: '10px' }}>
+          <div key={index} style={{ display: 'flex', marginBottom: '10px', alignItems: 'center' }}>
             <input
               type="text"
               placeholder="Material name"
@@ -150,8 +259,17 @@ const Calculator = () => {
               placeholder="Quantity"
               value={material.quantity}
               onChange={(e) => updateMaterial(index, 'quantity', e.target.value)}
-              style={{ width: '80px', padding: '5px' }}
+              style={{ width: '80px', marginRight: '10px', padding: '5px' }}
             />
+            <div style={{ width: '80px', padding: '5px', background: '#f5f5f5', border: '1px solid #ddd', textAlign: 'center' }}>
+              ${(material.cost * material.quantity).toFixed(2)}
+            </div>
+            <button 
+              onClick={() => removeMaterial(index)}
+              style={{ marginLeft: '10px', background: 'none', border: 'none', color: '#e53935', fontSize: '18px', cursor: 'pointer' }}
+            >
+              ×
+            </button>
           </div>
         ))}
         
@@ -164,8 +282,9 @@ const Calculator = () => {
       </div>
       
       {/* Display materials total */}
-      <div style={{ marginTop: '20px', padding: '10px', background: '#f5f5f5', borderRadius: '4px' }}>
-        <h3>Materials Total: ${materialTotal.toFixed(2)}</h3>
+      <div style={{ marginTop: '20px', padding: '10px', background: '#f5f5f5', borderRadius: '4px', display: 'flex', justifyContent: 'space-between' }}>
+        <span style={{ fontWeight: 'bold' }}>Materials Subtotal:</span>
+        <span style={{ fontSize: '18px', fontWeight: 'bold' }}>${materialTotal.toFixed(2)}</span>
       </div>
       
       {/* Component Calculator */}
@@ -379,8 +498,9 @@ const Calculator = () => {
       </div>
       
       {/* Display labor cost */}
-      <div style={{ marginTop: '20px', padding: '10px', background: '#f5f5f5', borderRadius: '4px' }}>
-        <h3>Labor Cost: ${laborCost.toFixed(2)}</h3>
+      <div style={{ marginTop: '20px', padding: '10px', background: '#f5f5f5', borderRadius: '4px', display: 'flex', justifyContent: 'space-between' }}>
+        <span style={{ fontWeight: 'bold' }}>Labor Cost:</span>
+        <span style={{ fontSize: '18px', fontWeight: 'bold' }}>${laborCost.toFixed(2)}</span>
       </div>
       
       {/* Material Markup */}
@@ -403,25 +523,38 @@ const Calculator = () => {
       <div style={{ marginTop: '20px', background: '#e1f5fe', padding: '15px', borderRadius: '4px' }}>
         <h2 style={{ marginTop: '0' }}>Pricing Information</h2>
         
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '15px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '15px' }}>
           <div>
             <h3 style={{ margin: '0 0 5px 0' }}>My Cost</h3>
-            <p style={{ margin: '0' }}>${myCost.toFixed(2)}</p>
+            <p style={{ margin: '0', fontSize: '18px', fontWeight: 'bold' }}>${myCost.toFixed(2)}</p>
+            <p style={{ margin: '5px 0 0 0', fontSize: '14px', color: '#666' }}>
+              Materials: ${materialTotal.toFixed(2)}<br />
+              Labor: ${laborCost.toFixed(2)}
+            </p>
           </div>
           <div>
             <h3 style={{ margin: '0 0 5px 0' }}>Materials with Markup</h3>
-            <p style={{ margin: '0' }}>${materialWithMarkup.toFixed(2)}</p>
+            <p style={{ margin: '0', fontSize: '18px', fontWeight: 'bold' }}>${materialWithMarkup.toFixed(2)}</p>
+            <p style={{ margin: '5px 0 0 0', fontSize: '14px', color: '#666' }}>
+              Markup: {settings.materialMarkup}×
+            </p>
           </div>
         </div>
         
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '15px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '15px' }}>
           <div>
             <h3 style={{ margin: '0 0 5px 0' }}>Suggested Retail</h3>
-            <p style={{ margin: '0' }}>${suggestedRetailPrice.toFixed(2)}</p>
+            <p style={{ margin: '0', fontSize: '18px', fontWeight: 'bold' }}>${suggestedRetailPrice.toFixed(2)}</p>
+            <p style={{ margin: '5px 0 0 0', fontSize: '14px', color: '#666' }}>
+              Profit: ${(suggestedRetailPrice - myCost).toFixed(2)}
+            </p>
           </div>
           <div>
             <h3 style={{ margin: '0 0 5px 0' }}>Suggested Wholesale</h3>
-            <p style={{ margin: '0' }}>${suggestedWholesalePrice.toFixed(2)}</p>
+            <p style={{ margin: '0', fontSize: '18px', fontWeight: 'bold' }}>${suggestedWholesalePrice.toFixed(2)}</p>
+            <p style={{ margin: '5px 0 0 0', fontSize: '14px', color: '#666' }}>
+              Profit: ${(suggestedWholesalePrice - myCost).toFixed(2)}
+            </p>
           </div>
         </div>
       </div>
@@ -448,17 +581,17 @@ const Calculator = () => {
         
         {settings.customRetailPrice && (
           <div style={{ marginTop: '15px', background: '#e8f5e9', padding: '15px', borderRadius: '4px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
               <div>
                 <h3 style={{ margin: '0 0 5px 0' }}>Final Retail Price</h3>
-                <p style={{ margin: '0', fontWeight: 'bold' }}>${finalRetailPrice.toFixed(2)}</p>
+                <p style={{ margin: '0', fontSize: '20px', fontWeight: 'bold' }}>${finalRetailPrice.toFixed(2)}</p>
                 <p style={{ margin: '5px 0 0 0', fontSize: '14px' }}>
                   Profit: ${(finalRetailPrice - myCost).toFixed(2)}
                 </p>
               </div>
               <div>
                 <h3 style={{ margin: '0 0 5px 0' }}>Final Wholesale Price</h3>
-                <p style={{ margin: '0', fontWeight: 'bold' }}>${finalWholesalePrice.toFixed(2)}</p>
+                <p style={{ margin: '0', fontSize: '20px', fontWeight: 'bold' }}>${finalWholesalePrice.toFixed(2)}</p>
                 <p style={{ margin: '5px 0 0 0', fontSize: '14px' }}>
                   Profit: ${(finalWholesalePrice - myCost).toFixed(2)}
                 </p>
