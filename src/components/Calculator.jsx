@@ -59,6 +59,29 @@ const Calculator = () => {
     piecesNeeded: 1
   });
 
+// Packaging state
+const [packaging, setPackaging] = useState({
+  // Boxes
+  boxPackageCost: 0,
+  boxPackageQty: 1,
+  boxNeeded: 1,
+  // Bags
+  bagPackageCost: 0,
+  bagPackageQty: 1,
+  bagNeeded: 1,
+  // Business Cards
+  cardPackageCost: 0,
+  cardPackageQty: 1,
+  cardNeeded: 1,
+  // Other Items
+  otherItems: [{
+    name: '',
+    packageCost: 0,
+    packageQty: 1,
+    needed: 1
+  }]
+});
+  
   const [wireCalc, setWireCalc] = useState({
     wireCost: 0,
     lengthNeeded: 0
@@ -187,6 +210,20 @@ const Calculator = () => {
       quantity: beadCalc.beadsNeeded
     }]);
   };
+
+// Calculate total packaging cost
+const calculatePackagingCost = () => {
+  const boxCost = (packaging.boxPackageCost / packaging.boxPackageQty) * packaging.boxNeeded;
+  const bagCost = (packaging.bagPackageCost / packaging.bagPackageQty) * packaging.bagNeeded;
+  const cardCost = (packaging.cardPackageCost / packaging.cardPackageQty) * packaging.cardNeeded;
+  
+  const otherItemsCost = packaging.otherItems.reduce((sum, item) => {
+    return sum + ((item.packageCost / item.packageQty) * item.needed);
+  }, 0);
+  
+  const totalPackagingCost = boxCost + bagCost + cardCost + otherItemsCost;
+  setPackagingCosts(totalPackagingCost);
+};
   
   // Update material line
   const updateMaterial = (index, field, value) => {
@@ -599,6 +636,250 @@ const Calculator = () => {
         <span style={{ fontWeight: 'bold' }}>Labor Cost:</span>
         <span style={{ fontSize: '18px', fontWeight: 'bold' }}>${laborCost.toFixed(2)}</span>
       </div>
+
+{/* Packaging Calculator */}
+<div style={{ marginTop: '20px' }}>
+  <h2>Packaging Calculator</h2>
+  <div style={{ border: '1px solid #ddd', borderRadius: '4px', padding: '15px' }}>
+    {/* Boxes */}
+    <div style={{ marginBottom: '15px' }}>
+      <h3 style={{ marginTop: '0' }}>Boxes</h3>
+      <div style={{ display: 'flex', gap: '10px' }}>
+        <div style={{ flex: '1' }}>
+          <label>Package Cost</label>
+          <input
+            type="number"
+            value={packaging.boxPackageCost}
+            onChange={(e) => setPackaging({...packaging, boxPackageCost: Number(e.target.value)})}
+            placeholder="Cost of package"
+            style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+            step="0.01"
+          />
+        </div>
+        <div style={{ width: '100px' }}>
+          <label>Qty in Package</label>
+          <input
+            type="number"
+            value={packaging.boxPackageQty}
+            onChange={(e) => setPackaging({...packaging, boxPackageQty: Number(e.target.value)})}
+            placeholder="Quantity"
+            style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+            min="1"
+          />
+        </div>
+        <div style={{ width: '100px' }}>
+          <label>Needed</label>
+          <input
+            type="number"
+            value={packaging.boxNeeded}
+            onChange={(e) => setPackaging({...packaging, boxNeeded: Number(e.target.value)})}
+            placeholder="Needed"
+            style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+            min="1"
+          />
+        </div>
+      </div>
+    </div>
+
+    {/* Bags */}
+    <div style={{ marginBottom: '15px' }}>
+      <h3 style={{ marginTop: '0' }}>Bags</h3>
+      <div style={{ display: 'flex', gap: '10px' }}>
+        <div style={{ flex: '1' }}>
+          <label>Package Cost</label>
+          <input
+            type="number"
+            value={packaging.bagPackageCost}
+            onChange={(e) => setPackaging({...packaging, bagPackageCost: Number(e.target.value)})}
+            placeholder="Cost of package"
+            style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+            step="0.01"
+          />
+        </div>
+        <div style={{ width: '100px' }}>
+          <label>Qty in Package</label>
+          <input
+            type="number"
+            value={packaging.bagPackageQty}
+            onChange={(e) => setPackaging({...packaging, bagPackageQty: Number(e.target.value)})}
+            placeholder="Quantity"
+            style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+            min="1"
+          />
+        </div>
+        <div style={{ width: '100px' }}>
+          <label>Needed</label>
+          <input
+            type="number"
+            value={packaging.bagNeeded}
+            onChange={(e) => setPackaging({...packaging, bagNeeded: Number(e.target.value)})}
+            placeholder="Needed"
+            style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+            min="1"
+          />
+        </div>
+      </div>
+    </div>
+
+    {/* Business Cards */}
+    <div style={{ marginBottom: '15px' }}>
+      <h3 style={{ marginTop: '0' }}>Business Cards</h3>
+      <div style={{ display: 'flex', gap: '10px' }}>
+        <div style={{ flex: '1' }}>
+          <label>Package Cost</label>
+          <input
+            type="number"
+            value={packaging.cardPackageCost}
+            onChange={(e) => setPackaging({...packaging, cardPackageCost: Number(e.target.value)})}
+            placeholder="Cost of package"
+            style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+            step="0.01"
+          />
+        </div>
+        <div style={{ width: '100px' }}>
+          <label>Qty in Package</label>
+          <input
+            type="number"
+            value={packaging.cardPackageQty}
+            onChange={(e) => setPackaging({...packaging, cardPackageQty: Number(e.target.value)})}
+            placeholder="Quantity"
+            style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+            min="1"
+          />
+        </div>
+        <div style={{ width: '100px' }}>
+          <label>Needed</label>
+          <input
+            type="number"
+            value={packaging.cardNeeded}
+            onChange={(e) => setPackaging({...packaging, cardNeeded: Number(e.target.value)})}
+            placeholder="Needed"
+            style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+            min="1"
+          />
+        </div>
+      </div>
+    </div>
+
+    {/* Other Items */}
+    <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+        <h3 style={{ marginTop: '0', marginBottom: '0' }}>Other Items</h3>
+        <button
+          onClick={() => setPackaging({
+            ...packaging,
+            otherItems: [...packaging.otherItems, { name: '', packageCost: 0, packageQty: 1, needed: 1 }]
+          })}
+          style={{ padding: '3px 10px', background: '#4a90e2', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+        >
+          Add Item
+        </button>
+      </div>
+      
+      {packaging.otherItems.map((item, index) => (
+        <div key={index} style={{ border: '1px solid #eee', borderRadius: '4px', padding: '10px', marginBottom: '10px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+            <input
+              type="text"
+              value={item.name}
+              onChange={(e) => {
+                const newItems = [...packaging.otherItems];
+                newItems[index].name = e.target.value;
+                setPackaging({...packaging, otherItems: newItems});
+              }}
+              placeholder="Item name (e.g., Price Tag)"
+              style={{ flex: '1', padding: '5px' }}
+            />
+            <button
+              onClick={() => {
+                const newItems = packaging.otherItems.filter((_, i) => i !== index);
+                setPackaging({...packaging, otherItems: newItems});
+              }}
+              style={{ background: 'none', border: 'none', color: '#e53935', fontSize: '18px', cursor: 'pointer', marginLeft: '5px' }}
+            >
+              ×
+            </button>
+          </div>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <div style={{ flex: '1' }}>
+              <label>Package Cost</label>
+              <input
+                type="number"
+                value={item.packageCost}
+                onChange={(e) => {
+                  const newItems = [...packaging.otherItems];
+                  newItems[index].packageCost = Number(e.target.value);
+                  setPackaging({...packaging, otherItems: newItems});
+                }}
+                placeholder="Cost of package"
+                style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+                step="0.01"
+              />
+            </div>
+            <div style={{ width: '100px' }}>
+              <label>Qty in Package</label>
+              <input
+                type="number"
+                value={item.packageQty}
+                onChange={(e) => {
+                  const newItems = [...packaging.otherItems];
+                  newItems[index].packageQty = Number(e.target.value);
+                  setPackaging({...packaging, otherItems: newItems});
+                }}
+                placeholder="Quantity"
+                style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+                min="1"
+              />
+            </div>
+            <div style={{ width: '100px' }}>
+              <label>Needed</label>
+              <input
+                type="number"
+                value={item.needed}
+                onChange={(e) => {
+                  const newItems = [...packaging.otherItems];
+                  newItems[index].needed = Number(e.target.value);
+                  setPackaging({...packaging, otherItems: newItems});
+                }}
+                placeholder="Needed"
+                style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+                min="1"
+              />
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    {/* Total and Add Button */}
+    <div style={{ marginTop: '15px', padding: '15px', background: '#f5f5f5', borderRadius: '4px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+        <span style={{ fontWeight: 'bold', fontSize: '16px' }}>Total Packaging Cost:</span>
+        <span style={{ fontWeight: 'bold', fontSize: '16px' }}>${(
+          (((packaging.boxPackageCost || 0) / (packaging.boxPackageQty || 1)) * (packaging.boxNeeded || 0)) +
+          (((packaging.bagPackageCost || 0) / (packaging.bagPackageQty || 1)) * (packaging.bagNeeded || 0)) +
+          (((packaging.cardPackageCost || 0) / (packaging.cardPackageQty || 1)) * (packaging.cardNeeded || 0)) +
+          packaging.otherItems.reduce((sum, item) => 
+            sum + (((item.packageCost || 0) / (item.packageQty || 1)) * (item.needed || 0)), 0)
+        ).toFixed(2)}</span>
+      </div>
+      <button 
+        onClick={calculatePackagingCost}
+        style={{ width: '100%', padding: '8px', background: '#4a90e2', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+      >
+        Add Packaging to Cost
+      </button>
+    </div>
+  </div>
+</div>
+
+{/* Display packaging cost if added */}
+{packagingCosts > 0 && (
+  <div style={{ marginTop: '10px', padding: '10px', background: '#f5f5f5', borderRadius: '4px', display: 'flex', justifyContent: 'space-between' }}>
+    <span style={{ fontWeight: 'bold' }}>Packaging Cost:</span>
+    <span style={{ fontSize: '18px', fontWeight: 'bold' }}>${packagingCosts.toFixed(2)}</span>
+  </div>
+)}
       
       {/* Overhead Calculator */}
       <div style={{ marginTop: '20px' }}>
