@@ -253,28 +253,33 @@ const calculatePackagingCost = () => {
   };
   
   // Calculations with overhead and packaging
-  const materialTotal = materials.reduce((sum, mat) => sum + (mat.cost * mat.quantity), 0);
-  const laborHours = labor.hours + (labor.minutes / 60);
-  const laborCost = labor.hourlyRate * laborHours;
-  const overheadCost = savedOverhead ? (savedOverhead.monthlyTotal * (savedOverhead.designPercentage / 100)) : 0;
-  
-  // My cost calculation with overhead
-  const myCost = materialTotal + laborCost + overheadCost + packagingCosts;
-  
+const materialTotal = materials.reduce((sum, mat) => sum + (mat.cost * mat.quantity), 0);
+const laborHours = labor.hours + (labor.minutes / 60);
+const laborCost = labor.hourlyRate * laborHours;
+const overheadCost = savedOverhead ? (savedOverhead.monthlyTotal * (savedOverhead.designPercentage / 100)) : 0;
+
+// My cost calculation
+const myCost = materialTotal + laborCost + overheadCost + packagingCosts;
+
+// Material markup calculation (for display purposes)
+const materialWithMarkup = materialTotal * settings.materialMarkup;
+
 // Calculate retail price using the markup multiplier
 const calculatedRetailPrice = myCost * settings.materialMarkup;
 const calculatedWholesalePrice = calculatedRetailPrice / 2;
-  
-  // Final prices with custom retail (if provided)
-  const finalRetailPrice = settings.customRetailPrice || calculatedRetailPrice;
-  const finalWholesalePrice = finalRetailPrice / 2;
-  
-  // Calculate profits
-  const initialRetailProfit = calculatedRetailPrice - myCost;
-  const initialWholesaleProfit = calculatedWholesalePrice - myCost;
-  const finalRetailProfit = finalRetailPrice - myCost;
-  const finalWholesaleProfit = finalWholesalePrice - myCost;
 
+// Calculate profits
+const initialRetailProfit = calculatedRetailPrice - myCost;
+const initialWholesaleProfit = calculatedWholesalePrice - myCost;
+
+// Final prices with custom retail (if provided)
+const finalRetailPrice = settings.customRetailPrice || calculatedRetailPrice;
+const finalWholesalePrice = finalRetailPrice / 2;
+
+// Calculate final profits
+const finalRetailProfit = finalRetailPrice - myCost;
+const finalWholesaleProfit = finalWholesalePrice - myCost;
+  
 // Export Functions
 const exportToExcel = () => {
   // Create array for vertical layout
