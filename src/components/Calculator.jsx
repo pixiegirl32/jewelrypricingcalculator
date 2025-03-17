@@ -795,7 +795,7 @@ const exportToPDF = () => {
                 placeholder="Cost per foot"
                 value={wireCalc.wireCost}
                 onChange={(e) => setWireCalc({...wireCalc, wireCost: Number(e.target.value)})}
-                style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+                style={{ display: 'block', width: '90%', padding: '12px', marginTop: '5px', borderRadius: '8px' }}
                 step="0.01"
               />
             </div>
@@ -806,7 +806,7 @@ const exportToPDF = () => {
                 placeholder="Inches needed"
                 value={wireCalc.lengthNeeded}
                 onChange={(e) => setWireCalc({...wireCalc, lengthNeeded: Number(e.target.value)})}
-                style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+                style={{ display: 'block', width: '90%', padding: '12px', marginTop: '5px', borderRadius: '8px' }}
                 step="0.25"
               />
             </div>
