@@ -968,7 +968,7 @@ const exportToPDF = () => {
         value={packaging.boxPackageCost}
         onChange={(e) => setPackaging({...packaging, boxPackageCost: Number(e.target.value)})}
         placeholder="Cost of package"
-        style={{ width: '100%', padding: '5px' }}
+        style={{ width: '90%', padding: '12px', borderRadius: '8px' }}
         step="0.01"
       />
     </div>
@@ -979,7 +979,7 @@ const exportToPDF = () => {
         value={packaging.boxPackageQty}
         onChange={(e) => setPackaging({...packaging, boxPackageQty: Number(e.target.value)})}
         placeholder="Quantity"
-        style={{ width: '100%', padding: '5px' }}
+        style={{ width: '90%', padding: '12px', borderRadius: '8px' }}
         min="1"
       />
     </div>
@@ -990,7 +990,7 @@ const exportToPDF = () => {
         value={packaging.boxNeeded}
         onChange={(e) => setPackaging({...packaging, boxNeeded: Number(e.target.value)})}
         placeholder="Needed"
-        style={{ width: '100%', padding: '5px' }}
+        style={{ width: '90%', padding: '12px', borderRadius: '8px' }}
         min="1"
       />
     </div>
@@ -1008,7 +1008,7 @@ const exportToPDF = () => {
         value={packaging.bagPackageCost}
         onChange={(e) => setPackaging({...packaging, bagPackageCost: Number(e.target.value)})}
         placeholder="Cost of package"
-        style={{ width: '100%', padding: '5px' }}
+        style={{ width: '90%', padding: '12px', borderRadius: '8px' }}
         step="0.01"
       />
     </div>
@@ -1019,7 +1019,7 @@ const exportToPDF = () => {
         value={packaging.bagPackageQty}
         onChange={(e) => setPackaging({...packaging, bagPackageQty: Number(e.target.value)})}
         placeholder="Quantity"
-        style={{ width: '100%', padding: '5px' }}
+        style={{ width: '90%', padding: '12px', borderRadius: '8px' }}
         min="1"
       />
     </div>
@@ -1030,7 +1030,7 @@ const exportToPDF = () => {
         value={packaging.bagNeeded}
         onChange={(e) => setPackaging({...packaging, bagNeeded: Number(e.target.value)})}
         placeholder="Needed"
-        style={{ width: '100%', padding: '5px' }}
+        style={{ width: '90%', padding: '12px', borderRadius: '8px' }}
         min="1"
       />
     </div>
@@ -1048,7 +1048,7 @@ const exportToPDF = () => {
         value={packaging.cardPackageCost}
         onChange={(e) => setPackaging({...packaging, cardPackageCost: Number(e.target.value)})}
         placeholder="Cost of package"
-        style={{ width: '100%', padding: '5px' }}
+        style={{ width: '90%', padding: '12px', borderRadius: '8px' }}
         step="0.01"
       />
     </div>
@@ -1059,7 +1059,7 @@ const exportToPDF = () => {
         value={packaging.cardPackageQty}
         onChange={(e) => setPackaging({...packaging, cardPackageQty: Number(e.target.value)})}
         placeholder="Quantity"
-        style={{ width: '100%', padding: '5px' }}
+        style={{ width: '90%', padding: '12px', borderRadius: '8px' }}
         min="1"
       />
     </div>
@@ -1070,7 +1070,7 @@ const exportToPDF = () => {
         value={packaging.cardNeeded}
         onChange={(e) => setPackaging({...packaging, cardNeeded: Number(e.target.value)})}
         placeholder="Needed"
-        style={{ width: '100%', padding: '5px' }}
+        style={{ width: '90%', padding: '12px', borderRadius: '8px' }}
         min="1"
       />
     </div>
@@ -1086,7 +1086,7 @@ const exportToPDF = () => {
             ...packaging,
             otherItems: [...packaging.otherItems, { name: '', packageCost: 0, packageQty: 1, needed: 1 }]
           })}
-          style={{ padding: '3px 10px', background: '#4a90e2', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+          style={{ padding: '12px 20px', background: '#4a90e2', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
         >
           Add Item
         </button>
@@ -1104,7 +1104,7 @@ const exportToPDF = () => {
           setPackaging({...packaging, otherItems: newItems});
         }}
         placeholder="Item name (e.g., Price Tag)"
-        style={{ flex: '1', padding: '5px' }}
+        style={{ flex: '1', padding: '12px', borderRadius: '8px' }}
       />
       <button
         onClick={() => {
