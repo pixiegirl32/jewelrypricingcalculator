@@ -928,7 +928,7 @@ const exportToPDF = () => {
               type="number"
               value={labor.hours}
               onChange={(e) => setLabor({...labor, hours: Number(e.target.value) || 0})}
-              style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+              style={{ display: 'block', width: '100%', padding: '12px', marginTop: '5px', borderRadius: '8px' }}
             />
           </div>
           <div>
@@ -936,7 +936,7 @@ const exportToPDF = () => {
             <select
               value={labor.minutes}
               onChange={(e) => setLabor({...labor, minutes: Number(e.target.value)})}
-              style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px', height: '30px' }}
+              style={{ display: 'block', width: '100%', padding: '12px', marginTop: '5px', borderRadius: '8px' }}
             >
               <option value="0">0</option>
               <option value="15">15</option>
