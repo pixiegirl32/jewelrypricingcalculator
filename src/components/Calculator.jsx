@@ -751,7 +751,7 @@ const exportToPDF = () => {
                 placeholder="Cost of package"
                 value={findingsCalc.packageCost}
                 onChange={(e) => setFindingsCalc({...findingsCalc, packageCost: Number(e.target.value)})}
-                style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+                style={{ display: 'block', width: '100%', padding: '12px', marginTop: '5px', borderRadius: '8px' }}
                 step="0.01"
               />
             </div>
@@ -762,7 +762,7 @@ const exportToPDF = () => {
                 placeholder="Number of pieces"
                 value={findingsCalc.pieceCount}
                 onChange={(e) => setFindingsCalc({...findingsCalc, pieceCount: Number(e.target.value)})}
-                style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+                style={{ display: 'block', width: '100%', padding: '12px', marginTop: '5px', borderRadius: '8px' }}
                 min="1"
               />
             </div>
@@ -773,13 +773,13 @@ const exportToPDF = () => {
                 placeholder="How many needed"
                 value={findingsCalc.piecesNeeded}
                 onChange={(e) => setFindingsCalc({...findingsCalc, piecesNeeded: Number(e.target.value)})}
-                style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+                style={{ display: 'block', width: '100%', padding: '12px', marginTop: '5px', borderRadius: '8px' }}
                 min="1"
               />
             </div>
             <button 
               onClick={addFindingsToMaterials}
-              style={{ width: '100%', padding: '8px', background: '#4a90e2', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+              style={{ width: '100%', padding: '12px', background: '#4a90e2', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
             >
               Add to Materials
             </button>
