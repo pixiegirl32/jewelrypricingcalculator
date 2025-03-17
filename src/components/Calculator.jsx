@@ -646,7 +646,7 @@ const exportToPDF = () => {
       </select>
       <button 
         onClick={() => setMaterials([...materials, { name: '', cost: 0, quantity: 1 }])}
-        style={{ padding: '5px 10px', background: '#4a90e2', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+        style={{ padding: '12px 20px', background: '#4a90e2', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
       >
         Add Material
       </button>
@@ -668,21 +668,21 @@ const exportToPDF = () => {
         placeholder="Material name"
         value={material.name}
         onChange={(e) => updateMaterial(index, 'name', e.target.value)}
-        style={{ flex: '1', marginRight: '10px', padding: '5px' }}
+        style={{ flex: '1', marginRight: '10px', padding: '12px', borderRadius: '8px' }}
       />
       <input
         type="number"
         placeholder="Cost"
         value={material.cost}
         onChange={(e) => updateMaterial(index, 'cost', e.target.value)}
-        style={{ width: '80px', marginRight: '10px', padding: '5px' }}
+        style={{ width: '80px', marginRight: '10px', padding: '12px', borderRadius: '8px' }}
       />
       <input
         type="number"
         placeholder="Quantity"
         value={material.quantity}
         onChange={(e) => updateMaterial(index, 'quantity', e.target.value)}
-        style={{ width: '80px', marginRight: '10px', padding: '5px' }}
+        style={{ width: '80px', marginRight: '10px', padding: '12px', borderRadius: '8px' }}
       />
       <div style={{ width: '80px', padding: '5px', background: '#f5f5f5', border: '1px solid #ddd', textAlign: 'center' }}>
         ${(material.cost * material.quantity).toFixed(2)}
