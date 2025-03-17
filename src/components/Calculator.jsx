@@ -270,7 +270,7 @@ const calculatedWholesalePrice = calculatedRetailPrice / 2;
 
 // Calculate profits
 const initialRetailProfit = calculatedRetailPrice - myCost;
-const initialWholesaleProfit = calculatedWholesalePrice - myCost;
+const initialWholesaleProfit = calculatedWholesalePrice - myCost + laborCost;
 
 // Final prices with custom retail (if provided)
 const finalRetailPrice = settings.customRetailPrice || calculatedRetailPrice;
@@ -278,7 +278,7 @@ const finalWholesalePrice = finalRetailPrice / 2;
 
 // Calculate final profits
 const finalRetailProfit = finalRetailPrice - myCost;
-const finalWholesaleProfit = finalWholesalePrice - myCost;
+const finalWholesaleProfit = finalWholesalePrice - myCost + laborCost;
   
 // Export Functions
 const exportToExcel = () => {
@@ -1359,7 +1359,7 @@ const exportToPDF = () => {
                 Wholesale: ${calculatedWholesalePrice.toFixed(2)}
               </p>
               <p style={{ fontSize: '14px', color: '#333', margin: '3px 0' }}>
-                Wholesale Profit: ${initialWholesaleProfit.toFixed(2)}
+                Wholesale Profit w/ Labor: ${initialWholesaleProfit.toFixed(2)}
               </p>
             </div>
           </div>
@@ -1402,7 +1402,7 @@ const exportToPDF = () => {
                 <h3 style={{ margin: '0 0 5px 0' }}>Final Wholesale Price</h3>
                 <p style={{ margin: '0', fontSize: '20px', fontWeight: 'bold' }}>${finalWholesalePrice.toFixed(2)}</p>
                 <p style={{ margin: '5px 0 0 0', fontSize: '14px' }}>
-                  Profit: ${finalWholesaleProfit.toFixed(2)}
+                  Profit w/ Labor: ${finalWholesaleProfit.toFixed(2)}
                 </p>
               </div>
             </div>
