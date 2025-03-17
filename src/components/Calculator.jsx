@@ -813,7 +813,7 @@ const exportToPDF = () => {
             <div style={{ marginBottom: '10px' }}></div>
             <button 
               onClick={addWireToMaterials}
-              style={{ width: '100%', padding: '12px', background: '#4a90e2', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', marginTop: '85px' }}
+              style={{ width: '100%', padding: '12px', background: '#4a90e2', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', marginTop: '80px' }}
             >
               Add to Materials
             </button>
