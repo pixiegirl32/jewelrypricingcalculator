@@ -919,7 +919,7 @@ const exportToPDF = () => {
               type="number"
               value={labor.hourlyRate}
               onChange={(e) => setLabor({...labor, hourlyRate: Number(e.target.value) || 0})}
-              style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+              style={{ display: 'block', width: '100%', padding: '12px', marginTop: '5px', borderRadius: '8px' }}
             />
           </div>
           <div>
