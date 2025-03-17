@@ -566,20 +566,20 @@ const exportToPDF = () => {
             value={designName} 
             onChange={(e) => setDesignName(e.target.value)}
             placeholder="Enter design name"
-            style={{ width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
+            style={{ width: '100%', padding: '12px', border: '1px solid #ddd', borderRadius: '8px' }}
           />
         </div>
         <div style={{ display: 'flex', gap: '10px' }}>
           <button
             onClick={saveDesign}
             style={{ 
-              padding: '8px 16px', 
-              background: '#4a90e2', 
-              color: 'white', 
-              border: 'none', 
-              borderRadius: '4px',
-              cursor: 'pointer'
-            }}
+  padding: '12px 20px', 
+  background: '#4a90e2', 
+  color: 'white', 
+  border: 'none', 
+  borderRadius: '8px',
+  cursor: 'pointer'
+}}
           >
             Save Design
           </button>
@@ -594,7 +594,7 @@ const exportToPDF = () => {
                 loadDesign(JSON.parse(e.target.value));
               }
             }}
-            style={{ padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
+            style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '8px' }}
             value=""
           >
             <option value="">Load Saved Design</option>
