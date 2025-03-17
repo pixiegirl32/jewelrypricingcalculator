@@ -751,7 +751,7 @@ const exportToPDF = () => {
                 placeholder="Cost of package"
                 value={findingsCalc.packageCost}
                 onChange={(e) => setFindingsCalc({...findingsCalc, packageCost: Number(e.target.value)})}
-                style={{ display: 'block', width: '100%', padding: '12px', marginTop: '5px', borderRadius: '8px' }}
+                style={{ display: 'block', width: '90%', padding: '12px', marginTop: '5px', borderRadius: '8px' }}
                 step="0.01"
               />
             </div>
@@ -762,7 +762,7 @@ const exportToPDF = () => {
                 placeholder="Number of pieces"
                 value={findingsCalc.pieceCount}
                 onChange={(e) => setFindingsCalc({...findingsCalc, pieceCount: Number(e.target.value)})}
-                style={{ display: 'block', width: '100%', padding: '12px', marginTop: '5px', borderRadius: '8px' }}
+                style={{ display: 'block', width: '90%', padding: '12px', marginTop: '5px', borderRadius: '8px' }}
                 min="1"
               />
             </div>
@@ -773,7 +773,7 @@ const exportToPDF = () => {
                 placeholder="How many needed"
                 value={findingsCalc.piecesNeeded}
                 onChange={(e) => setFindingsCalc({...findingsCalc, piecesNeeded: Number(e.target.value)})}
-                style={{ display: 'block', width: '100%', padding: '12px', marginTop: '5px', borderRadius: '8px' }}
+                style={{ display: 'block', width: '90%', padding: '12px', marginTop: '5px', borderRadius: '8px' }}
                 min="1"
               />
             </div>
