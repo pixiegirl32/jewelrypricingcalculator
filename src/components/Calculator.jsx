@@ -476,6 +476,15 @@ const exportToPDF = () => {
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
       <div style={{ 
+  textAlign: 'center', 
+  fontSize: '24px', 
+  fontWeight: 'bold', 
+  padding: '10px 0', 
+  marginBottom: '20px' 
+}}>
+  Jewelry Business School with Meaghan Young
+</div>
+      <div style={{ 
   padding: '15px', 
   background: '#f8f9fa', 
   marginBottom: '20px', 
