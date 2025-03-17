@@ -829,7 +829,7 @@ const exportToPDF = () => {
                 placeholder="Cost of bulk length"
                 value={chainCalc.bulkCost}
                 onChange={(e) => setChainCalc({...chainCalc, bulkCost: Number(e.target.value)})}
-                style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+                style={{ display: 'block', width: '90%', padding: '12px', marginTop: '5px', borderRadius: '8px' }}
                 step="0.01"
               />
             </div>
@@ -840,7 +840,7 @@ const exportToPDF = () => {
                 placeholder="Total length"
                 value={chainCalc.bulkLength}
                 onChange={(e) => setChainCalc({...chainCalc, bulkLength: Number(e.target.value)})}
-                style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+                style={{ display: 'block', width: '90%', padding: '12px', marginTop: '5px', borderRadius: '8px' }}
                 min="1"
               />
             </div>
@@ -851,13 +851,13 @@ const exportToPDF = () => {
                 placeholder="Inches needed"
                 value={chainCalc.lengthNeeded}
                 onChange={(e) => setChainCalc({...chainCalc, lengthNeeded: Number(e.target.value)})}
-                style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+                style={{ display: 'block', width: '90%', padding: '12px', marginTop: '5px', borderRadius: '8px' }}
                 step="0.25"
               />
             </div>
             <button 
               onClick={addChainToMaterials}
-              style={{ width: '100%', padding: '8px', background: '#4a90e2', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+              style={{ width: '100%', padding: '12px', background: '#4a90e2', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
             >
               Add to Materials
             </button>
