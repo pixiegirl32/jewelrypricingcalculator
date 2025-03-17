@@ -1168,7 +1168,7 @@ const exportToPDF = () => {
     </div>
 
     {/* Total and Add Button */}
-    <div style={{ marginTop: '15px', padding: '15px', background: '#f5f5f5', borderRadius: '4px' }}>
+    style={{ marginTop: '15px', padding: '16px', background: '#f5f5f5', borderRadius: '8px' }}
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
         <span style={{ fontWeight: 'bold', fontSize: '16px' }}>Total Packaging Cost:</span>
         <span style={{ fontWeight: 'bold', fontSize: '16px' }}>${(
@@ -1181,7 +1181,7 @@ const exportToPDF = () => {
       </div>
       <button 
         onClick={calculatePackagingCost}
-        style={{ width: '100%', padding: '8px', background: '#4a90e2', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+        style={{ width: '100%', padding: '12px', background: '#4a90e2', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
       >
         Add Packaging to Cost
       </button>
