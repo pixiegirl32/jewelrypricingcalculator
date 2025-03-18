@@ -1128,7 +1128,7 @@ const exportToPDF = () => {
             setPackaging({...packaging, otherItems: newItems});
           }}
           placeholder="Cost of package"
-          style={{ width: '100%', padding: '5px' }}
+          style={{ width: '100%', padding: '12px', borderRadius: '8px' }}
           step="0.01"
         />
       </div>
@@ -1143,7 +1143,7 @@ const exportToPDF = () => {
             setPackaging({...packaging, otherItems: newItems});
           }}
           placeholder="Quantity"
-          style={{ width: '100%', padding: '5px' }}
+          style={{ width: '100%', padding: '12px', borderRadius: '8px' }}
           min="1"
         />
       </div>
@@ -1158,7 +1158,7 @@ const exportToPDF = () => {
             setPackaging({...packaging, otherItems: newItems});
           }}
           placeholder="Needed"
-          style={{ width: '100%', padding: '5px' }}
+          style={{ width: '100%', padding: '12px', borderRadius: '8px' }}
           min="1"
         />
       </div>
