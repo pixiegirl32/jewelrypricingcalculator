@@ -1208,14 +1208,14 @@ const exportToPDF = () => {
                 placeholder="Expense name"
                 value={expense.name}
                 onChange={(e) => updateExpense(index, 'name', e.target.value)}
-                style={{ flex: '1', padding: '5px' }}
+                style={{ flex: '1', padding: '12px', borderRadius: '8px' }}
               />
               <input
                 type="number"
                 placeholder="Amount"
                 value={expense.amount}
                 onChange={(e) => updateExpense(index, 'amount', e.target.value)}
-                style={{ width: '120px', padding: '5px' }}
+                style={{ width: '120px', padding: '12px', borderRadius: '8px' }}
                 step="0.01"
               />
               <button 
@@ -1253,7 +1253,7 @@ const exportToPDF = () => {
                   ...prev,
                   designPercentage: Math.min(15, Math.max(10, Number(e.target.value)))
                 }))}
-                style={{ width: '100%', padding: '5px' }}
+                style={{ width: '100%', padding: '12px', borderRadius: '8px' }}
               />
             </div>
             
