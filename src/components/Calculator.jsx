@@ -960,7 +960,7 @@ const exportToPDF = () => {
     {/* Boxes */}
 <div style={{ marginBottom: '15px' }}>
   <h3 style={{ marginTop: '0', marginBottom: '10px' }}>Boxes</h3>
-  <div style={{ display: 'grid', gridTemplateColumns: '1fr 120px 120px', gap: '10px', alignItems: 'end' }}>
+  <div style={{ display: 'grid', gridTemplateColumns: '1fr 120px 120px', gap: '20px', alignItems: 'end' }}>
     <div>
       <label style={{ display: 'block', marginBottom: '5px' }}>Package Cost</label>
       <input
@@ -1000,7 +1000,7 @@ const exportToPDF = () => {
     {/* Bags */}
 <div style={{ marginBottom: '15px' }}>
   <h3 style={{ marginTop: '0', marginBottom: '10px' }}>Bags</h3>
-  <div style={{ display: 'grid', gridTemplateColumns: '1fr 120px 120px', gap: '10px', alignItems: 'end' }}>
+  <div style={{ display: 'grid', gridTemplateColumns: '1fr 120px 120px', gap: '20px', alignItems: 'end' }}>
     <div>
       <label style={{ display: 'block', marginBottom: '5px' }}>Package Cost</label>
       <input
@@ -1040,7 +1040,7 @@ const exportToPDF = () => {
     {/* Business Cards */}
 <div style={{ marginBottom: '15px' }}>
   <h3 style={{ marginTop: '0', marginBottom: '10px' }}>Business Cards</h3>
-  <div style={{ display: 'grid', gridTemplateColumns: '1fr 120px 120px', gap: '10px', alignItems: 'end' }}>
+  <div style={{ display: 'grid', gridTemplateColumns: '1fr 120px 120px', gap: '20px', alignItems: 'end' }}>
     <div>
       <label style={{ display: 'block', marginBottom: '5px' }}>Package Cost</label>
       <input
@@ -1116,7 +1116,7 @@ const exportToPDF = () => {
         ×
       </button>
     </div>
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 120px 120px', gap: '10px', alignItems: 'end' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 120px 120px', gap: '20px', alignItems: 'end' }}>
       <div>
         <label style={{ display: 'block', marginBottom: '5px' }}>Package Cost</label>
         <input
