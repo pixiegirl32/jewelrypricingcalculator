@@ -1310,7 +1310,7 @@ const exportToPDF = () => {
             type="number"
             value={settings.materialMarkup}
             onChange={(e) => setSettings({...settings, materialMarkup: Number(e.target.value) || 1})}
-            style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+            style={{ display: 'block', width: '100%', padding: '12px', marginTop: '5px', borderRadius: '8px' }}
             min="1"
             step="0.1"
           />
@@ -1383,7 +1383,7 @@ const exportToPDF = () => {
               customRetailPrice: e.target.value ? Number(e.target.value) : null
             })}
             placeholder={`Suggested: $${calculatedRetailPrice.toFixed(2)}`}
-            style={{ display: 'block', width: '100%', padding: '5px', marginTop: '5px' }}
+            style={{ display: 'block', width: '100%', padding: '12px', marginTop: '5px', borderRadius: '8px' }}
             step="0.01"
           />
         </div>
