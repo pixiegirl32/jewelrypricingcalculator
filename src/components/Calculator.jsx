@@ -1116,7 +1116,7 @@ const exportToPDF = () => {
         ×
       </button>
     </div>
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 120px 120px', gap: '20px', alignItems: 'end' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 140px 140px', gap: '30px', alignItems: 'end' }}>
       <div>
         <label style={{ display: 'block', marginBottom: '5px' }}>Package Cost</label>
         <input
