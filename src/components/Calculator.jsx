@@ -1411,32 +1411,32 @@ const exportToPDF = () => {
       </div>
       
       {/* Footer Information */}
-      <div style={{ marginTop: '30px', padding: '15px', textAlign: 'center', borderTop: '1px solid #ddd' }}>
-        <p style={{ fontWeight: 'bold', fontSize: '20px', marginBottom: '15px' }}>
-          Want to grow your jewelry business or add the skill of metalsmithing?
-        </p>
-        <p>
-          Learn about our business programs, jewelry classes, retreats and more at The Crested Butte Jewelry School and Jewelry Business School.
-        <p style={{ fontSize: '16px', marginBottom: '15px' }}>
-        <a 
-          href="https://www.cbjewelryschool.com/what-is-jewelry-business-school" 
-          target="_blank" 
-          rel="noopener noreferrer"
-         style={{ 
-  display: 'inline-block', 
-  padding: '12px 24px', 
-  background: '#4a90e2', 
-  color: 'white', 
-  textDecoration: 'none', 
-  borderRadius: '8px',
-  marginTop: '15px',
-  fontSize: '16px',
-  fontWeight: 'bold'
-}}
-        >
-          Learn More Here
-        </a>
-      </div>
+<div style={{ marginTop: '30px', padding: '15px', textAlign: 'center', borderTop: '1px solid #ddd' }}>
+  <p style={{ fontWeight: 'bold', fontSize: '20px', marginBottom: '15px' }}>
+    Want to grow your jewelry business or add the skill of metalsmithing?
+  </p>
+  <p style={{ fontSize: '16px', marginBottom: '15px' }}>
+    Learn about our business programs, jewelry classes, retreats and more at The Crested Butte Jewelry School and Jewelry Business School.
+  </p>
+  <a 
+    href="https://www.cbjewelryschool.com/what-is-jewelry-business-school" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    style={{ 
+      display: 'inline-block', 
+      padding: '12px 24px', 
+      background: '#4a90e2', 
+      color: 'white', 
+      textDecoration: 'none', 
+      borderRadius: '8px',
+      marginTop: '15px',
+      fontSize: '16px',
+      fontWeight: 'bold'
+    }}
+  >
+    Learn More Here
+  </a>
+</div>
     </div>
   );
 };
