@@ -1253,7 +1253,7 @@ const exportToPDF = () => {
                   ...prev,
                   designPercentage: Math.min(15, Math.max(10, Number(e.target.value)))
                 }))}
-                style={{ width: '100%', padding: '12px', borderRadius: '8px' }}
+                style={{ width: '90%', padding: '12px', borderRadius: '8px' }}
               />
             </div>
             
