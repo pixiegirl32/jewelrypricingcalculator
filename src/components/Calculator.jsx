@@ -1168,7 +1168,7 @@ const exportToPDF = () => {
     </div>
 
     {/* Total and Add Button */}
-    style={{ marginTop: '15px', padding: '15px', background: '#f5f5f5', borderRadius: '4px' }}
+    <div style={{ marginTop: '15px', padding: '15px', background: '#f5f5f5', borderRadius: '4px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
         <span style={{ fontWeight: 'bold', fontSize: '16px' }}>Total Packaging Cost:</span>
         <span style={{ fontWeight: 'bold', fontSize: '16px' }}>${(
