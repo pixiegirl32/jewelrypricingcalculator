@@ -912,7 +912,7 @@ const exportToPDF = () => {
       {/* Labor Section */}
       <div style={{ marginTop: '20px' }}>
         <h2>Labor</h2>
-        <div style={{ display: 'flex', gap: '20px', marginBottom: '10px' }}>
+        <div style={{ display: 'flex', gap: '50px', marginBottom: '10px' }}>
           <div>
             <label>Hourly Rate ($)</label>
             <input
