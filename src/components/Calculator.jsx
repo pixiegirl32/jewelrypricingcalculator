@@ -29,6 +29,15 @@ const Calculator = () => {
   if (savedMats) {
     setSavedMaterials(JSON.parse(savedMats));
   }
+   const savedPkg = localStorage.getItem('savedPackaging');
+  if (savedPkg) {
+    setSavedPackaging(JSON.parse(savedPkg));
+  }
+  
+  const savedItems = localStorage.getItem('savedOtherItems');
+  if (savedItems) {
+    setSavedOtherItems(JSON.parse(savedItems));
+  }
 }, []);
   
   // Materials State
