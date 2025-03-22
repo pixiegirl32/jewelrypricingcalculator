@@ -265,7 +265,7 @@ const myCost = materialTotal + laborCost + overheadCost + packagingCosts;
 const materialWithMarkup = materialTotal * settings.materialMarkup;
 
 // Calculate retail price using the markup multiplier
-const calculatedRetailPrice = myCost * settings.materialMarkup;
+const calculatedRetailPrice = (materialTotal * settings.materialMarkup) + laborCost + overheadCost + packagingCosts;
 const calculatedWholesalePrice = calculatedRetailPrice / 2;
 
 // Calculate profits
