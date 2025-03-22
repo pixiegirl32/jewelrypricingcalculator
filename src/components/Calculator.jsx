@@ -38,18 +38,6 @@ const Calculator = () => {
 
 // Saved Materials State
 const [savedMaterials, setSavedMaterials] = useState([]);
-
-const [savedPackaging, setSavedPackaging] = useState(() => {
-  const saved = localStorage.getItem('savedPackaging');
-  return saved ? JSON.parse(saved) : [];
-});
-
-const [savedOtherItems, setSavedOtherItems] = useState(() => {
-  const saved = localStorage.getItem('savedOtherItems');
-  return saved ? JSON.parse(saved) : [];
-});
-
-const [packagingName, setPackagingName] = useState('');
   
   // Labor state
   const [labor, setLabor] = useState({
