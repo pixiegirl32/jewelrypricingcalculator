@@ -277,7 +277,7 @@ const finalRetailPrice = settings.customRetailPrice || calculatedRetailPrice;
 const finalWholesalePrice = finalRetailPrice / 2;
 
 // Calculate final profits
-const finalRetailProfit = finalRetailPrice - myCost;
+const finalRetailProfit = finalRetailPrice - myCost + laborCost;
 const finalWholesaleProfit = finalWholesalePrice - myCost + laborCost;
   
 // Export Functions
