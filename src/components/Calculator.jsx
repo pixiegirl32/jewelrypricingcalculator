@@ -1239,6 +1239,23 @@ const exportToPDF = () => {
         onClick={calculatePackagingCost}
         style={{ width: '100%', padding: '12px', background: '#4a90e2', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
       >
+        <select
+  onChange={(e) => {
+    if (e.target.value && e.target.value !== 'placeholder') {
+      const config = JSON.parse(e.target.value);
+      setPackaging(config.configuration);
+    }
+  }}
+  style={{ width: '100%', padding: '12px', borderRadius: '8px', marginBottom: '10px' }}
+  value="placeholder"
+>
+  <option value="placeholder">Load Saved Packaging...</option>
+  {savedPackaging.map((pkg, index) => (
+    <option key={index} value={JSON.stringify(pkg)}>
+      {pkg.name}
+    </option>
+  ))}
+</select>
         Add Packaging to Cost
       </button>
     </div>
