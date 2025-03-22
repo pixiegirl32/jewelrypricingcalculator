@@ -1239,6 +1239,37 @@ const exportToPDF = () => {
         onClick={calculatePackagingCost}
         style={{ width: '100%', padding: '12px', background: '#4a90e2', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
       >
+        <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+  <input
+    type="text"
+    value={packagingName}
+    onChange={(e) => setPackagingName(e.target.value)}
+    placeholder="Packaging name"
+    style={{ flex: '1', padding: '12px', borderRadius: '8px' }}
+  />
+  <button 
+    onClick={() => {
+      if (!packagingName) {
+        alert('Please enter a name for this packaging configuration');
+        return;
+      }
+      
+      const newSavedPackaging = [...savedPackaging, {
+        name: packagingName,
+        configuration: packaging,
+        date: new Date().toISOString()
+      }];
+      
+      setSavedPackaging(newSavedPackaging);
+      localStorage.setItem('savedPackaging', JSON.stringify(newSavedPackaging));
+      alert('Packaging configuration saved!');
+      setPackagingName('');
+    }}
+    style={{ padding: '12px', background: '#4CAF50', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
+  >
+    Save Packaging
+  </button>
+</div>
         <select
   onChange={(e) => {
     if (e.target.value && e.target.value !== 'placeholder') {
