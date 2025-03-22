@@ -138,6 +138,44 @@ const [packaging, setPackaging] = useState({
       alert('Please enter a design name before saving');
       return;
     }
+
+    // Save the current packaging configuration
+const savePackagingConfig = () => {
+  if (!packagingName) {
+    alert('Please enter a name for this packaging configuration');
+    return;
+  }
+  
+  const newSavedPackaging = [...savedPackaging, {
+    name: packagingName,
+    configuration: packaging,
+    date: new Date().toISOString()
+  }];
+  
+  setSavedPackaging(newSavedPackaging);
+  localStorage.setItem('savedPackaging', JSON.stringify(newSavedPackaging));
+  alert('Packaging configuration saved!');
+  setPackagingName('');
+};
+
+// Save an individual other item
+const saveOtherItem = (item) => {
+  if (!item.name) {
+    alert('Please enter a name for this item');
+    return;
+  }
+  
+  const newSavedItems = [...savedOtherItems, item];
+  setSavedOtherItems(newSavedItems);
+  localStorage.setItem('savedOtherItems', JSON.stringify(newSavedItems));
+  alert(`Item "${item.name}" saved!`);
+};
+
+// Load a saved packaging configuration
+const loadPackagingConfig = (configString) => {
+  const config = JSON.parse(configString);
+  setPackaging(config.configuration);
+};
     
     const designToSave = {
       name: designName,
