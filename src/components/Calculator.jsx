@@ -269,7 +269,7 @@ const calculatedRetailPrice = (materialTotal * settings.materialMarkup) + laborC
 const calculatedWholesalePrice = calculatedRetailPrice / 2;
 
 // Calculate profits
-const initialRetailProfit = calculatedRetailPrice - myCost;
+const initialRetailProfit = calculatedRetailPrice - myCost + laborCost;
 const initialWholesaleProfit = calculatedWholesalePrice - myCost + laborCost;
 
 // Final prices with custom retail (if provided)
@@ -1351,8 +1351,8 @@ const exportToPDF = () => {
                 Retail: ${calculatedRetailPrice.toFixed(2)}
               </p>
               <p style={{ fontSize: '14px', color: '#333', margin: '3px 0' }}>
-                Retail Profit: ${initialRetailProfit.toFixed(2)}
-              </p>
+  Retail Profit w/ Labor: ${initialRetailProfit.toFixed(2)}
+</p>
             </div>
             <div style={{ marginTop: '15px' }}>
               <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '5px 0' }}>
