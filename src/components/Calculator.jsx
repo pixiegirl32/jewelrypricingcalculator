@@ -1395,8 +1395,8 @@ const exportToPDF = () => {
                 <h3 style={{ margin: '0 0 5px 0' }}>Final Retail Price</h3>
                 <p style={{ margin: '0', fontSize: '20px', fontWeight: 'bold' }}>${finalRetailPrice.toFixed(2)}</p>
                 <p style={{ margin: '5px 0 0 0', fontSize: '14px' }}>
-                  Profit: ${finalRetailProfit.toFixed(2)}
-                </p>
+  Profit w/ Labor: ${finalRetailProfit.toFixed(2)}
+</p>
               </div>
               <div>
                 <h3 style={{ margin: '0 0 5px 0' }}>Final Wholesale Price</h3>
