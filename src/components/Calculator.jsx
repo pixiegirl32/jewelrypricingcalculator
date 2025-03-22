@@ -38,6 +38,15 @@ const Calculator = () => {
 
 // Saved Materials State
 const [savedMaterials, setSavedMaterials] = useState([]);
+
+// Saved Packaging State
+const [savedPackaging, setSavedPackaging] = useState([]);
+
+// Saved Other Items State
+const [savedOtherItems, setSavedOtherItems] = useState([]);
+
+// Packaging Name State
+const [packagingName, setPackagingName] = useState('');
   
   // Labor state
   const [labor, setLabor] = useState({
