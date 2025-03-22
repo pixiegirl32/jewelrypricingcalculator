@@ -1235,52 +1235,6 @@ const exportToPDF = () => {
             sum + (((item.packageCost || 0) / (item.packageQty || 1)) * (item.needed || 0)), 0)
         ).toFixed(2)}</span>
       </div>
-      <div style={{ marginBottom: '15px' }}>
-  <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
-    <input
-      type="text"
-      value={packagingName}
-      onChange={(e) => setPackagingName(e.target.value)}
-      placeholder="Packaging configuration name"
-      style={{ flex: '1', padding: '12px', borderRadius: '8px' }}
-    />
-    <button 
-      onClick={savePackagingConfig}
-      style={{ padding: '12px', background: '#4CAF50', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
-    >
-      Save Config
-    </button>
-  </div>
-  
-  <select
-    onChange={(e) => {
-      if (e.target.value) {
-        if (e.target.value === 'delete') {
-          const configToDelete = prompt('Enter the name of the configuration to delete:');
-          if (configToDelete) {
-            const newSavedPackaging = savedPackaging.filter(pkg => pkg.name !== configToDelete);
-            setSavedPackaging(newSavedPackaging);
-            localStorage.setItem('savedPackaging', JSON.stringify(newSavedPackaging));
-          }
-        } else {
-          loadPackagingConfig(e.target.value);
-        }
-      }
-    }}
-    style={{ width: '100%', padding: '12px', borderRadius: '8px', marginBottom: '10px' }}
-    value=""
-  >
-    <option value="">Load Saved Packaging Configuration</option>
-    {savedPackaging.map((pkg, index) => (
-      <option key={index} value={JSON.stringify(pkg)}>
-        {pkg.name} - {new Date(pkg.date).toLocaleDateString()}
-      </option>
-    ))}
-    {savedPackaging.length > 0 && (
-      <option value="delete">Delete a Configuration...</option>
-    )}
-  </select>
-</div>
       <button 
         onClick={calculatePackagingCost}
         style={{ width: '100%', padding: '12px', background: '#4a90e2', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
