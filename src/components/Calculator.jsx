@@ -1274,7 +1274,11 @@ const exportToPDF = () => {
   onChange={(e) => {
     if (e.target.value && e.target.value !== 'placeholder') {
       const config = JSON.parse(e.target.value);
-      setPackaging(config.configuration);
+// Make sure we maintain the current structure
+setPackaging(prev => ({
+  ...prev,  // Keep all existing properties
+  ...config.configuration  // Merge in the saved configuration
+}));
     }
   }}
   style={{ width: '100%', padding: '12px', borderRadius: '8px', marginBottom: '10px' }}
